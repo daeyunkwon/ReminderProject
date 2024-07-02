@@ -55,7 +55,8 @@ final class ListViewController: BaseViewController {
     //MARK: - Functions
     
     @objc private func leftBarButtonTapped() {
-        print(#function)
+        let navi = UINavigationController(rootViewController: AddTodoViewController())
+        present(navi, animated: true)
     }
     
     @objc private func rightBarButtonTapped() {
