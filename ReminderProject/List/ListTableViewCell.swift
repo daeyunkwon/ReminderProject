@@ -15,6 +15,15 @@ final class ListTableViewCell: BaseTableViewCell {
     
     weak var delegate: ListTableViewCellDelegate?
     
+    var reminder: Reminder? {
+        didSet {
+            guard let data = reminder else { return }
+            titleLabel.text = data.todoTitle
+            contentLabel.text = data.todoContent
+            deadlineLabel.text = data.deadline
+        }
+    }
+    
     
     //MARK: - UI Components
     
@@ -72,6 +81,17 @@ final class ListTableViewCell: BaseTableViewCell {
         return view
     }()
     
+    //MARK: - Life Cycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        importanceLabel.text = nil
+        titleLabel.text = nil
+        contentLabel.text = nil
+        deadlineLabel.text = nil
+        tagLabel.text = nil
+    }
+    
     //MARK: - Init
     
     override final func configureLayout() {
@@ -126,10 +146,10 @@ final class ListTableViewCell: BaseTableViewCell {
     }
     
     override final func configureUI() {
-        importanceLabel.text = "!!!"
-        titleLabel.text = "키보드 구매"
-        contentLabel.text = "예븐 키캡 알아보기"
-        deadlineLabel.text = "8888.8.88"
+//        importanceLabel.text = "!!!"
+//        titleLabel.text = "키보드 구매"
+//        contentLabel.text = "예븐 키캡 알아보기"
+//        deadlineLabel.text = "8888.8.88"
         tagLabel.text = "#공부"
     }
     

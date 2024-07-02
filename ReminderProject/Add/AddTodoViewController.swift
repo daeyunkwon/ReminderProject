@@ -13,6 +13,8 @@ final class AddTodoViewController: BaseViewController {
     
     //MARK: - Properties
     
+    var closureForListVC: (() -> Void) = { }
+    
     private var titleText: String? {
         didSet {
             if let titleText = titleText {
@@ -102,6 +104,7 @@ final class AddTodoViewController: BaseViewController {
             do {
                 try REALM_DATABASE.write {
                     REALM_DATABASE.add(data)
+                    self.closureForListVC()
                     dismiss(animated: true)
                 }
             } catch {

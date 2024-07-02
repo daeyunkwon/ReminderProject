@@ -113,6 +113,8 @@ final class AddTodoHeaderTableCell: UITableViewHeaderFooterView {
 extension AddTodoHeaderTableCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
+        self.closureForDateSend(titleTextField.text, contentTextField.text)
+        
         if textView.text.count != 0 {
             self.placeholderLabel.isHidden = true
         } else {

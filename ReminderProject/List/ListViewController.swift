@@ -7,13 +7,14 @@
 
 import UIKit
 
+import RealmSwift
 import SnapKit
 
 final class ListViewController: BaseViewController {
 
     //MARK: - Properties
     
-    
+    var list: Results<Reminder>!
     
     //MARK: - UI Components
     
@@ -30,6 +31,11 @@ final class ListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupData()
+    }
+    
+    private func setupData() {
+        list = REALM_DATABASE.objects(Reminder.self)
     }
     
     override final func setupNavi() {
@@ -55,7 +61,12 @@ final class ListViewController: BaseViewController {
     //MARK: - Functions
     
     @objc private func leftBarButtonTapped() {
-        let navi = UINavigationController(rootViewController: AddTodoViewController())
+        let vc = AddTodoViewController()
+        vc.closureForListVC = {[weak self] in
+            guard let self else { return }
+            self.tableView.reloadData()
+        }
+        let navi = UINavigationController(rootViewController: vc)
         present(navi, animated: true)
     }
     
@@ -75,7 +86,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return self.list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,6 +95,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.delegate = self
+        cell.reminder = list[indexPath.row]
         
         return cell
     }
