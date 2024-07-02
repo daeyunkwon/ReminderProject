@@ -17,6 +17,8 @@ enum Constant {
         static let checkmarkCircleFill = UIImage(systemName: "checkmark.circle.fill")
         
         static let circle = UIImage(systemName: "circle")
+        
+        static let chevronRight = UIImage(systemName: "chevron.right")
     }
     
     enum Color {
@@ -24,6 +26,7 @@ enum Constant {
         static let blue = UIColor.systemBlue
         static let gray = UIColor.systemGray
         static let darkGary = UIColor.darkGray
+        static let tertiaryGray = UIColor.tertiarySystemGroupedBackground
     }
     
     

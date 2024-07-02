@@ -72,7 +72,7 @@ final class ListTableViewCell: BaseTableViewCell {
         return view
     }()
     
-    //MARK: - Life Cycle
+    //MARK: - Init
     
     override final func configureLayout() {
         contentView.addSubview(circleButton)

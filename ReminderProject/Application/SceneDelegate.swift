@@ -7,6 +7,10 @@
 
 import UIKit
 
+import RealmSwift
+
+var REALM_DATABASE: Realm!
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -20,6 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.rootViewController = UINavigationController(rootViewController: ListViewController())
         window?.makeKeyAndVisible()
+        
+        do {
+            REALM_DATABASE = try Realm()
+            print(REALM_DATABASE?.configuration.fileURL ?? "")
+        } catch {
+            print(ReminderRealmError.noRealm.errorDescription)
+            print(error)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

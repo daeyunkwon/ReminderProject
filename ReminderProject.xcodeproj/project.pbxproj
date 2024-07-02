@@ -21,6 +21,10 @@
 		44E179722C341D7E003901CC /* Reuseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179712C341D7E003901CC /* Reuseable.swift */; };
 		44E179742C34230A003901CC /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179732C34230A003901CC /* Protocol.swift */; };
 		44E179762C342B16003901CC /* AddTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179752C342B16003901CC /* AddTodoViewController.swift */; };
+		44E179792C342EF5003901CC /* AddTodoHeaderTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179782C342EF5003901CC /* AddTodoHeaderTableCell.swift */; };
+		44E1797B2C343342003901CC /* AddTodoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1797A2C343342003901CC /* AddTodoTableCell.swift */; };
+		44E1797D2C344E6E003901CC /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1797C2C344E6E003901CC /* DateViewController.swift */; };
+		44E179812C34566C003901CC /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179802C34566C003901CC /* RealmModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		44E179712C341D7E003901CC /* Reuseable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reuseable.swift; sourceTree = "<group>"; };
 		44E179732C34230A003901CC /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		44E179752C342B16003901CC /* AddTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoViewController.swift; sourceTree = "<group>"; };
+		44E179782C342EF5003901CC /* AddTodoHeaderTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoHeaderTableCell.swift; sourceTree = "<group>"; };
+		44E1797A2C343342003901CC /* AddTodoTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoTableCell.swift; sourceTree = "<group>"; };
+		44E1797C2C344E6E003901CC /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
+		44E179802C34566C003901CC /* RealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				44E1795F2C34060E003901CC /* Application */,
+				44E1797F2C34564D003901CC /* Database */,
 				44E179602C34094F003901CC /* Utils */,
 				44E179772C342B1B003901CC /* Add */,
 				44E179692C340E20003901CC /* List */,
@@ -133,8 +142,27 @@
 			isa = PBXGroup;
 			children = (
 				44E179752C342B16003901CC /* AddTodoViewController.swift */,
+				44E179782C342EF5003901CC /* AddTodoHeaderTableCell.swift */,
+				44E1797A2C343342003901CC /* AddTodoTableCell.swift */,
+				44E1797E2C344E72003901CC /* Date */,
 			);
 			path = Add;
+			sourceTree = "<group>";
+		};
+		44E1797E2C344E72003901CC /* Date */ = {
+			isa = PBXGroup;
+			children = (
+				44E1797C2C344E6E003901CC /* DateViewController.swift */,
+			);
+			path = Date;
+			sourceTree = "<group>";
+		};
+		44E1797F2C34564D003901CC /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				44E179802C34566C003901CC /* RealmModel.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,12 +244,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				44E1794F2C33E697003901CC /* ListViewController.swift in Sources */,
+				44E179812C34566C003901CC /* RealmModel.swift in Sources */,
 				44E179622C34095F003901CC /* BaseViewController.swift in Sources */,
 				44E179722C341D7E003901CC /* Reuseable.swift in Sources */,
 				44E1796B2C340F52003901CC /* Constant.swift in Sources */,
 				44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */,
+				44E1797D2C344E6E003901CC /* DateViewController.swift in Sources */,
 				44E179742C34230A003901CC /* Protocol.swift in Sources */,
+				44E179792C342EF5003901CC /* AddTodoHeaderTableCell.swift in Sources */,
 				44E179762C342B16003901CC /* AddTodoViewController.swift in Sources */,
+				44E1797B2C343342003901CC /* AddTodoTableCell.swift in Sources */,
 				44E1796F2C341319003901CC /* BaseTableViewCell.swift in Sources */,
 				44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */,
 				44E1796D2C3412CE003901CC /* ListTableViewCell.swift in Sources */,

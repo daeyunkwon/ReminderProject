@@ -30,4 +30,12 @@ class BaseViewController: UIViewController {
         alert.addAction(UIAlertAction(title: buttonTitle, style: buttonStyle, handler: buttonAction))
         present(alert, animated: true)
     }
+    
+    func pushViewController(_ viewController: UIViewController, animated: Bool = true) {
+        navigationController?.pushViewController(viewController, animated: animated)
+    }
+    
+    func popViewController(animated: Bool = true) {
+        navigationController?.popViewController(animated: animated)
+    }
 }
