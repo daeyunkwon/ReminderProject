@@ -141,7 +141,7 @@ final class ListTableViewCell: BaseTableViewCell {
             make.height.equalTo(0.2)
             make.leading.equalTo(circleButton.snp.trailing).offset(20)
             make.trailing.equalToSuperview()
-            make.bottom.equalTo(contentView.snp.bottom).offset(-5)
+            make.bottom.equalTo(contentView.snp.bottom).offset(0)
         }
     }
     
