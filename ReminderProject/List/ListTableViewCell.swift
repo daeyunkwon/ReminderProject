@@ -99,7 +99,7 @@ final class ListTableViewCell: BaseTableViewCell {
     override final func configureLayout() {
         contentView.addSubview(checkButton)
         checkButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
+            make.top.equalToSuperview().inset(25)
             make.leading.equalToSuperview().inset(20)
             make.size.equalTo(30)
         }
@@ -139,7 +139,7 @@ final class ListTableViewCell: BaseTableViewCell {
         
         contentView.addSubview(separatorView)
         separatorView.snp.makeConstraints { make in
-            make.top.equalTo(tagLabel.snp.bottom).offset(10)
+            make.top.equalTo(tagLabel.snp.bottom).offset(20)
             make.height.equalTo(0.2)
             make.leading.equalTo(checkButton.snp.trailing).offset(20)
             make.trailing.equalToSuperview()
