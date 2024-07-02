@@ -99,6 +99,30 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .normal, title: "삭제") { (UIContextualAction, UIView, delete: @escaping (Bool) -> Void) in
+            
+            do {
+                try REALM_DATABASE.write {
+                    REALM_DATABASE.delete(self.list[indexPath.row])
+                    self.tableView.deleteRows(at: [indexPath], with: .right)
+                }
+            } catch {
+                print(ReminderRealmError.failedToDelete.errorDescription)
+                print(error)
+            }
+            
+            delete(true)
+        }
+        
+        delete.backgroundColor = .systemRed
+        delete.image = UIImage(systemName: "trash")
+        
+        let config = UISwipeActionsConfiguration(actions: [delete])
+        config.performsFirstActionWithFullSwipe = false
+        return config
+    }
 }
 
 //MARK: - ListTableViewCellDelegate

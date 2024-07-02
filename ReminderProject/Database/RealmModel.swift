@@ -12,6 +12,7 @@ import RealmSwift
 enum ReminderRealmError: Error {
     case noRealm
     case failedToAdd
+    case failedToDelete
     
     var errorDescription: String {
         switch self {
@@ -19,6 +20,8 @@ enum ReminderRealmError: Error {
             return "Error: default.realm 파일을 찾는데 실패했습니다."
         case .failedToAdd:
             return "Error: realm에 데이터 쓰기가 실패했습니다."
+        case .failedToDelete:
+            return "Error: realm에 데이터 삭제가 실패했습니다."
         }
     }
 }
