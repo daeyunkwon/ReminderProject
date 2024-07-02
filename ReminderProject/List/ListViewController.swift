@@ -14,7 +14,7 @@ final class ListViewController: BaseViewController {
 
     //MARK: - Properties
     
-    var list: Results<Reminder>!
+    private var list: Results<Reminder>!
     
     //MARK: - UI Components
     
@@ -26,6 +26,22 @@ final class ListViewController: BaseViewController {
         tv.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.identifier)
         return tv
     }()
+    
+    private var itemsForMenu: [UIAction] {
+        let filteredDeadline = UIAction(title: "마감일 순으로 보기") { [weak self] _ in
+            
+        }
+        
+        let filteredTitle = UIAction(title: "제목 순으로 보기") { [weak self] _ in
+            
+        }
+        
+        let filteredPriority = UIAction(title: "우선순위 낮음만 보기") { [weak self] _ in
+            
+        }
+        
+        return [filteredDeadline, filteredTitle, filteredPriority]
+    }
     
     //MARK: - Life Cycle
     
@@ -42,8 +58,11 @@ final class ListViewController: BaseViewController {
         navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constant.SymbolImage.plusCircle, style: .plain, target: self, action: #selector(leftBarButtonTapped))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constant.SymbolImage.ellipsisCircle, style: .plain, target: self, action: #selector(rightBarButtonTapped))
         
+        
+        let menu = UIMenu(title: "정렬", children: self.itemsForMenu)
+        let rightBarButton = UIBarButtonItem(title: nil, image: Constant.SymbolImage.ellipsisCircle, primaryAction: nil, menu: menu)
+        navigationItem.rightBarButtonItem = rightBarButton
     }
     
     override final func configureLayout() {
@@ -69,12 +88,6 @@ final class ListViewController: BaseViewController {
         let navi = UINavigationController(rootViewController: vc)
         present(navi, animated: true)
     }
-    
-    @objc private func rightBarButtonTapped() {
-        print(#function)
-    }
-
-
 }
 
 //MARK: - UITableViewDataSource, UITableViewDelegate
@@ -130,7 +143,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
 extension ListViewController: ListTableViewCellDelegate {
     
     func checkButtonTapped(cell: ListTableViewCell) {
-        print(#function)
+        cell.updateDisplayCheckButton(isDone: Bool.random())
     }
 }
 

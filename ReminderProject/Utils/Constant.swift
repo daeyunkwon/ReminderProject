@@ -14,7 +14,7 @@ enum Constant {
         
         static let ellipsisCircle = UIImage(systemName: "ellipsis.circle")
         
-        static let checkmarkCircleFill = UIImage(systemName: "checkmark.circle.fill")
+        static let checkmarkCircleFill = UIImage(systemName: "checkmark.circle.fill")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white, Constant.Color.customGreen]))
         
         static let circle = UIImage(systemName: "circle")
         
@@ -22,6 +22,7 @@ enum Constant {
     }
     
     enum Color {
+        static let customGreen = UIColor(red: 106/255, green: 166/255, blue: 132/255, alpha: 1)
         static let customSkyBlue = UIColor(red: 84/255, green: 113/255, blue: 158/255, alpha: 1)
         static let blue = UIColor.systemBlue
         static let gray = UIColor.systemGray

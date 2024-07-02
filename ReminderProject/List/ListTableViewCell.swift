@@ -27,12 +27,12 @@ final class ListTableViewCell: BaseTableViewCell {
     
     //MARK: - UI Components
     
-    private lazy var circleButton: UIButton = {
+    private lazy var checkButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle(nil, for: .normal)
         btn.setImage(Constant.SymbolImage.circle, for: .normal)
         btn.tintColor = Constant.Color.darkGary
-        btn.addTarget(self, action: #selector(circleButtonTapped), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         return btn
     }()
     
@@ -48,6 +48,7 @@ final class ListTableViewCell: BaseTableViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .left
+        label.numberOfLines = 0
         return label
     }()
     
@@ -56,6 +57,7 @@ final class ListTableViewCell: BaseTableViewCell {
         label.font = .systemFont(ofSize: 14)
         label.textColor = Constant.Color.gray
         label.textAlignment = .left
+        label.numberOfLines = 0
         return label
     }()
     
@@ -95,8 +97,8 @@ final class ListTableViewCell: BaseTableViewCell {
     //MARK: - Init
     
     override final func configureLayout() {
-        contentView.addSubview(circleButton)
-        circleButton.snp.makeConstraints { make in
+        contentView.addSubview(checkButton)
+        checkButton.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(20)
             make.size.equalTo(30)
@@ -104,14 +106,14 @@ final class ListTableViewCell: BaseTableViewCell {
         
         contentView.addSubview(importanceLabel)
         importanceLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(circleButton.snp.centerY)
-            make.leading.equalTo(circleButton.snp.trailing).offset(20)
+            make.centerY.equalTo(checkButton.snp.centerY)
+            make.leading.equalTo(checkButton.snp.trailing).offset(20)
             importanceLabel.setContentHuggingPriority(.init(999), for: .horizontal)
         }
         
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(circleButton.snp.centerY)
+            make.centerY.equalTo(checkButton.snp.centerY)
             make.leading.equalTo(importanceLabel.snp.trailing).offset(3)
             make.trailing.equalTo(contentView.snp.trailing).offset(-10)
         }
@@ -119,7 +121,7 @@ final class ListTableViewCell: BaseTableViewCell {
         contentView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.equalTo(circleButton.snp.trailing).offset(20)
+            make.leading.equalTo(checkButton.snp.trailing).offset(20)
             make.trailing.equalToSuperview().inset(10)
         }
         
@@ -139,7 +141,7 @@ final class ListTableViewCell: BaseTableViewCell {
         separatorView.snp.makeConstraints { make in
             make.top.equalTo(tagLabel.snp.bottom).offset(10)
             make.height.equalTo(0.2)
-            make.leading.equalTo(circleButton.snp.trailing).offset(20)
+            make.leading.equalTo(checkButton.snp.trailing).offset(20)
             make.trailing.equalToSuperview()
             make.bottom.equalTo(contentView.snp.bottom).offset(0)
         }
@@ -155,8 +157,17 @@ final class ListTableViewCell: BaseTableViewCell {
     
     //MARK: - Functions
     
-    @objc private func circleButtonTapped() {
+    @objc private func checkButtonTapped() {
         delegate?.checkButtonTapped(cell: self)
+    }
+    
+    func updateDisplayCheckButton(isDone: Bool) {
+        
+        if isDone {
+            self.checkButton.setImage(Constant.SymbolImage.checkmarkCircleFill, for: .normal)
+        } else {
+            self.checkButton.setImage(Constant.SymbolImage.circle, for: .normal)
+        }
     }
 
 }
