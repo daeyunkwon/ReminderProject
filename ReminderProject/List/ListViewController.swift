@@ -116,14 +116,16 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .normal, title: "삭제") { (UIContextualAction, UIView, delete: @escaping (Bool) -> Void) in
             
-            do {
-                try REALM_DATABASE.write {
-                    REALM_DATABASE.delete(self.list[indexPath.row])
-                    self.tableView.deleteRows(at: [indexPath], with: .right)
+            self.showAlert(title: "삭제", message: "삭제하시겠습니까?", cancelTitle: "취소", buttonTitle: "삭제하기", buttonStyle: .destructive) { okAction in
+                do {
+                    try REALM_DATABASE.write {
+                        REALM_DATABASE.delete(self.list[indexPath.row])
+                        self.tableView.deleteRows(at: [indexPath], with: .right)
+                    }
+                } catch {
+                    print(ReminderRealmError.failedToDelete.errorDescription)
+                    print(error)
                 }
-            } catch {
-                print(ReminderRealmError.failedToDelete.errorDescription)
-                print(error)
             }
             
             delete(true)
