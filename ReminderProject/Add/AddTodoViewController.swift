@@ -54,7 +54,7 @@ final class AddTodoViewController: BaseViewController {
     //MARK: - UI Components
     
     private lazy var tableView: UITableView = {
-        let tv = UITableView()
+        let tv = UITableView(frame: .zero, style: .grouped)
         tv.separatorStyle = .none
         tv.dataSource = self
         tv.delegate = self
