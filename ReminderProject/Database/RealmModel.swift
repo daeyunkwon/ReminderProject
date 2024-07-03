@@ -40,11 +40,14 @@ class Reminder: Object {
         self.todoTitle = todoTitle
         self.todoContent = todoContent
         self.deadline = deadline
+        self.priority = 3 //우선순위 제일 낮음
     }
     
     enum Key: String {
         case todoTitle
         case todoContent
         case deadline
+        case tag
+        case priority
     }
 }

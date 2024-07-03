@@ -48,9 +48,9 @@ final class ListViewController: BaseViewController {
         
         let filteredPriority = UIAction(title: "우선순위 낮음만 보기") { [weak self] _ in
             guard let self else { return }
-//            list = REALM_DATABASE.objects(Reminder.self).filter {
-//                
-//            }
+            list = REALM_DATABASE.objects(Reminder.self).where {
+                $0.priority == 3
+            }.sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true)
             self.tableView.reloadData()
         }
         
