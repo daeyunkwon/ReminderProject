@@ -28,8 +28,9 @@ final class AddTodoViewController: BaseViewController {
             }
         }
     }
-    private var deadline: String?
     private var contentText: String?
+    private var deadline: String?
+    private var tag: String?
     private var priority: Int = 3
     
     private enum CellType: Int, CaseIterable {
@@ -67,13 +68,20 @@ final class AddTodoViewController: BaseViewController {
     
     //MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "새로운 할 일"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationItem.title = ""
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override final func setupNavi() {
-        navigationItem.title = "새로운 할 일"
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(leftBarButtonTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -158,7 +166,7 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.deadline.rawValue:
             cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.deadline)
         case CellType.tag.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.tag)
         case CellType.priority.rawValue:
             cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
         case CellType.addImage.rawValue:
@@ -173,8 +181,10 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
+        //마감일
         case CellType.deadline.rawValue:
             let vc = DateViewController()
+            
             if let date = self.deadline {
                 let myFormatter = DateFormatter()
                 myFormatter.dateFormat = "yyyy.MM.dd(EEE)"
@@ -185,6 +195,23 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             
             vc.closureForDateSend = {[weak self] sender in
                 self?.deadline = sender
+                self?.tableView.reloadData()
+            }
+            pushViewController(vc)
+        
+        //태그
+        case CellType.tag.rawValue:
+            let vc = TagViewController()
+            vc.settingTag = self.tag
+            
+            vc.closureForDataSend = {[weak self] sender in
+                if let tagString = sender {
+                    if !tagString.trimmingCharacters(in: .whitespaces).isEmpty {
+                        self?.tag = tagString.trimmingCharacters(in: .punctuationCharacters)
+                    } else {
+                        self?.tag = nil
+                    }
+                }
                 self?.tableView.reloadData()
             }
             pushViewController(vc)
