@@ -27,7 +27,7 @@ enum Constant {
         static let blue = UIColor.systemBlue
         static let gray = UIColor.systemGray
         static let darkGary = UIColor.darkGray
-        static let quaternaryLabel = UIColor.quaternaryLabel
+        static let grayForBackView = UIColor.quaternaryLabel
     }
     
     
