@@ -30,6 +30,7 @@ final class AddTodoViewController: BaseViewController {
     }
     private var deadline: String?
     private var contentText: String?
+    private var priority: Int = 3
     
     private enum CellType: Int, CaseIterable {
         case deadline
@@ -153,7 +154,19 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        cell.cellConfig(text: CellType.allCases[indexPath.row].titleText)
+        switch indexPath.row {
+        case CellType.deadline.rawValue:
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.deadline)
+        case CellType.tag.rawValue:
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+        case CellType.priority.rawValue:
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+        case CellType.addImage.rawValue:
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+        default:
+            break
+        }
+        
         cell.selectionStyle = .none
         return cell
     }
@@ -164,6 +177,7 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = DateViewController()
             vc.closureForDateSend = {[weak self] sender in
                 self?.deadline = sender
+                self?.tableView.reloadData()
             }
             pushViewController(vc)
         default:

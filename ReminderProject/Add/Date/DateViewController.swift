@@ -13,31 +13,21 @@ final class DateViewController: BaseViewController {
     
     //MARK: - Properties
     
-    var closureForDateSend: ((String?) -> Void) = { sender in }
+    var closureForDateSend: ((String) -> Void) = { sender in }
     
     //MARK: - UI Components
     
-    private lazy var deadlineInputTextField: UITextField = {
-        let tf = UITextField()
-        tf.borderStyle = .roundedRect
-        tf.backgroundColor = Constant.Color.tertiaryGray
-        tf.placeholder = "2024.07.03"
-        tf.delegate = self
-        return tf
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .inline
+        picker.locale = Locale(identifier: "ko-KR")
+        picker.date = Date()
+        picker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+        return picker
     }()
     
-    
     //MARK: - Life Cycle
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.deadlineInputTextField.becomeFirstResponder()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,11 +39,11 @@ final class DateViewController: BaseViewController {
     }
     
     override func configureLayout() {
-        view.addSubview(deadlineInputTextField)
-        deadlineInputTextField.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.height.equalTo(100)
+        view.addSubview(datePicker)
+        datePicker.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
         }
     }
     
@@ -65,16 +55,12 @@ final class DateViewController: BaseViewController {
     //MARK: - Functions
     
     @objc private func rightBarButtonTapped() {
-        self.closureForDateSend(self.deadlineInputTextField.text)
         self.popViewController()
     }
-
-}
-
-extension DateViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.deadlineInputTextField.resignFirstResponder()
-        return true
+    @objc private func datePickerValueChanged() {
+        let date = datePicker.date
+        let dateString = Date.makeDateString(date: date)
+        self.closureForDateSend(dateString)
     }
 }

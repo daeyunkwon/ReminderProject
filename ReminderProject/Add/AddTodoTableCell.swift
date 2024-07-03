@@ -20,13 +20,19 @@ final class AddTodoTableCell: BaseTableViewCell {
     private let backView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 10
-        view.backgroundColor = Constant.Color.tertiaryGray
+        view.backgroundColor = Constant.Color.quaternaryLabel
         return view
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
+        return label
+    }()
+    
+    private let settingValueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
         return label
     }()
     
@@ -53,17 +59,27 @@ final class AddTodoTableCell: BaseTableViewCell {
             make.trailing.equalToSuperview().inset(20)
         }
         
+        backView.addSubview(settingValueLabel)
+        settingValueLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(chevronRightButton.snp.leading).offset(-10)
+        }
+        
         backView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
-            make.trailing.equalTo(chevronRightButton.snp.leading).offset(5)
         }
+    }
+    
+    override func configureUI() {
+        backgroundColor = .clear
     }
     
     //MARK: - Functions
     
-    func cellConfig(text: String) {
-        self.titleLabel.text = text
+    func cellConfig(title: String?, settingValue: String?) {
+        self.titleLabel.text = title
+        self.settingValueLabel.text = settingValue
     }
 }
