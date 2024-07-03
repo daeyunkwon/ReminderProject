@@ -28,19 +28,33 @@ final class ListViewController: BaseViewController {
     }()
     
     private var itemsForMenu: [UIAction] {
+        let filteredAll = UIAction(title: "전체 보기") { [weak self] _ in
+            guard let self else { return }
+            list = REALM_DATABASE.objects(Reminder.self)
+            self.tableView.reloadData()
+        }
+        
         let filteredDeadline = UIAction(title: "마감일 순으로 보기") { [weak self] _ in
-            
+            guard let self else { return }
+            list = REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true)
+            self.tableView.reloadData()
         }
         
         let filteredTitle = UIAction(title: "제목 순으로 보기") { [weak self] _ in
-            
+            guard let self else { return }
+            list = REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.todoTitle.rawValue, ascending: true)
+            self.tableView.reloadData()
         }
         
         let filteredPriority = UIAction(title: "우선순위 낮음만 보기") { [weak self] _ in
-            
+            guard let self else { return }
+//            list = REALM_DATABASE.objects(Reminder.self).filter {
+//                
+//            }
+            self.tableView.reloadData()
         }
         
-        return [filteredDeadline, filteredTitle, filteredPriority]
+        return [filteredAll, filteredDeadline, filteredTitle, filteredPriority]
     }
     
     //MARK: - Life Cycle

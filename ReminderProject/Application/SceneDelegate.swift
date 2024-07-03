@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         do {
             REALM_DATABASE = try Realm()
             print(REALM_DATABASE?.configuration.fileURL ?? "")
+            print("현재 스키마 버전: \(REALM_DATABASE.configuration.schemaVersion)")
         } catch {
             print(ReminderRealmError.noRealm.errorDescription)
             print(error)

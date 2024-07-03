@@ -32,6 +32,8 @@ class Reminder: Object {
     @Persisted var todoTitle: String
     @Persisted var todoContent: String?
     @Persisted var deadline: String?
+    @Persisted var tag: String?
+    @Persisted var priority: Int
     
     convenience init(todoTitle: String, todoContent: String? = nil, deadline: String? = nil) {
         self.init()

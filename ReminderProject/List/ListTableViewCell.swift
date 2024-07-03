@@ -179,7 +179,7 @@ final class ListTableViewCell: BaseTableViewCell {
 //        titleLabel.text = "키보드 구매"
 //        contentLabel.text = "예븐 키캡 알아보기"
 //        deadlineLabel.text = "8888.8.88"
-        tagLabel.text = "#공부"
+//        tagLabel.text = "#공부"
     }
     
     //MARK: - Functions
