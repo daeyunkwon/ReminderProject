@@ -67,8 +67,6 @@ final class ListViewController: BaseViewController {
     override final func setupNavi() {
         navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constant.SymbolImage.plusCircle, style: .plain, target: self, action: #selector(leftBarButtonTapped))
-        
         
         let menu = UIMenu(title: "정렬", children: self.itemsForMenu)
         let rightBarButton = UIBarButtonItem(title: nil, image: Constant.SymbolImage.ellipsisCircle, primaryAction: nil, menu: menu)

@@ -62,6 +62,16 @@ final class MainViewController: BaseViewController {
     
     //MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "전체"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupData()
@@ -96,7 +106,6 @@ final class MainViewController: BaseViewController {
     }
     
     override func setupNavi() {
-        self.navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: Constant.Color.gray]
         
@@ -198,10 +207,12 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             print("오늘 셀 선택됨")
         case CellType.scheduled.rawValue:
             print("예정 셀 선택됨")
+        
         case CellType.all.rawValue:
             let vc = ListViewController()
             vc.list = allList
             pushViewController(vc)
+            
         case CellType.flag.rawValue:
             print("깃발 표시 셀 선택됨")
         case CellType.done.rawValue:
