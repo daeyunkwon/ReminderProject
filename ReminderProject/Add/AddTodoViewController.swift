@@ -108,7 +108,7 @@ final class AddTodoViewController: BaseViewController {
     @objc private func rightBarButtonTapped() {
         
         if let title = self.titleText {
-            let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: deadline)
+            let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority)
             
             do {
                 try REALM_DATABASE.write {
@@ -221,7 +221,6 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = PriorityViewController()
             
             vc.settingPriority = self.priority
-            print(self.priority)
             
             vc.closureForDataSend = {[weak self] sender in
                 self?.priority = sender

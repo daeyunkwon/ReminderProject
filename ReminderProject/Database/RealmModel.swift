@@ -33,15 +33,16 @@ class Reminder: Object {
     @Persisted var todoContent: String?
     @Persisted var deadline: String?
     @Persisted var tag: String?
-    @Persisted var priority: Int
+    @Persisted var priority: Int //우선순위 기준 -> 1: 높음, 2: 보통, 3: 낮음
     @Persisted var isDone: Bool
     
-    convenience init(todoTitle: String, todoContent: String? = nil, deadline: String? = nil) {
+    convenience init(todoTitle: String, todoContent: String? = nil, deadline: String? = nil, tag: String? = nil, priority: Int) {
         self.init()
         self.todoTitle = todoTitle
         self.todoContent = todoContent
         self.deadline = deadline
-        self.priority = 3 //우선순위 제일 낮음
+        self.tag = tag
+        self.priority = priority
         self.isDone = false
     }
     

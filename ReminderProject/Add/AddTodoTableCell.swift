@@ -11,10 +11,6 @@ import SnapKit
 
 final class AddTodoTableCell: BaseTableViewCell {
     
-    //MARK: - Properties
-    
-    
-    
     //MARK: - UI Components
     
     private let backView: UIView = {
