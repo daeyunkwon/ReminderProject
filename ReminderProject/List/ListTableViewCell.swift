@@ -20,7 +20,7 @@ final class ListTableViewCell: BaseTableViewCell {
             guard let data = reminder else { return }
             titleLabel.text = data.todoTitle
             contentLabel.text = data.todoContent
-            deadlineLabel.text = data.deadline
+            deadlineLabel.text = Date.makeDateString(date: Date(timeIntervalSince1970: data.deadline ?? 0)) 
             
             updateDisplayImportanceLabel(with: data.priority)
             updateDisplayCheckButton(isDone: data.isDone)
@@ -38,7 +38,6 @@ final class ListTableViewCell: BaseTableViewCell {
             }
         }
     }
-    
     
     //MARK: - UI Components
     

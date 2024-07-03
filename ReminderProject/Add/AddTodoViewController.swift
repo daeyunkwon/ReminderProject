@@ -29,7 +29,7 @@ final class AddTodoViewController: BaseViewController {
         }
     }
     private var contentText: String?
-    private var deadline: String?
+    private var deadline: Double?
     private var tag: String?
     private var priority: Int = 3
     
@@ -164,7 +164,13 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch indexPath.row {
         case CellType.deadline.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.deadline)
+            if self.deadline != nil {
+                let deadlineString = Date.makeDateString(date: Date(timeIntervalSince1970: self.deadline ?? 0))
+                cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: deadlineString)
+            } else {
+                cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+            }
+            
         case CellType.tag.rawValue:
             cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.tag)
         case CellType.priority.rawValue:
@@ -185,11 +191,8 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.deadline.rawValue:
             let vc = DateViewController()
             
-            if let date = self.deadline {
-                let myFormatter = DateFormatter()
-                myFormatter.dateFormat = "yyyy.MM.dd(EEE)"
-                myFormatter.locale = Locale(identifier: "ko-KR")
-                let date = myFormatter.date(from: date) ?? Date()
+            if let safeDeadline = self.deadline {
+                let date = Date(timeIntervalSince1970: safeDeadline)
                 vc.selectedDate = date
             }
             

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		445BE0812C355A000079B81B /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0802C355A000079B81B /* TagViewController.swift */; };
 		445BE0842C35692A0079B81B /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0832C35692A0079B81B /* PriorityViewController.swift */; };
+		445BE0882C3570650079B81B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0872C3570650079B81B /* MainViewController.swift */; };
+		445BE08A2C3588250079B81B /* MainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0892C3588250079B81B /* MainCollectionCell.swift */; };
+		445BE08C2C35886D0079B81B /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE08B2C35886D0079B81B /* BaseCollectionViewCell.swift */; };
 		44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794A2C33E697003901CC /* AppDelegate.swift */; };
 		44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794C2C33E697003901CC /* SceneDelegate.swift */; };
 		44E1794F2C33E697003901CC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794E2C33E697003901CC /* ListViewController.swift */; };
@@ -34,6 +37,9 @@
 /* Begin PBXFileReference section */
 		445BE0802C355A000079B81B /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		445BE0832C35692A0079B81B /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
+		445BE0872C3570650079B81B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		445BE0892C3588250079B81B /* MainCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionCell.swift; sourceTree = "<group>"; };
+		445BE08B2C35886D0079B81B /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		44E179472C33E697003901CC /* ReminderProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReminderProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E1794A2C33E697003901CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44E1794C2C33E697003901CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +91,15 @@
 			path = Priority;
 			sourceTree = "<group>";
 		};
+		445BE0862C35704F0079B81B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				445BE0872C3570650079B81B /* MainViewController.swift */,
+				445BE0892C3588250079B81B /* MainCollectionCell.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		44E1793E2C33E697003901CC = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +122,7 @@
 				44E1795F2C34060E003901CC /* Application */,
 				44E1797F2C34564D003901CC /* Database */,
 				44E179602C34094F003901CC /* Utils */,
+				445BE0862C35704F0079B81B /* Main */,
 				44E179772C342B1B003901CC /* Add */,
 				44E179692C340E20003901CC /* List */,
 				44E1795E2C3405FD003901CC /* Resource */,
@@ -159,6 +175,7 @@
 			children = (
 				44E179612C34095F003901CC /* BaseViewController.swift */,
 				44E1796E2C341319003901CC /* BaseTableViewCell.swift */,
+				445BE08B2C35886D0079B81B /* BaseCollectionViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -277,16 +294,19 @@
 				44E179812C34566C003901CC /* RealmModel.swift in Sources */,
 				44E179622C34095F003901CC /* BaseViewController.swift in Sources */,
 				44E179722C341D7E003901CC /* Reuseable.swift in Sources */,
+				445BE08C2C35886D0079B81B /* BaseCollectionViewCell.swift in Sources */,
 				44E1796B2C340F52003901CC /* Constant.swift in Sources */,
 				44E179892C354F4F003901CC /* Date+Extension.swift in Sources */,
 				44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */,
 				44E1797D2C344E6E003901CC /* DateViewController.swift in Sources */,
 				44E179742C34230A003901CC /* Protocol.swift in Sources */,
+				445BE08A2C3588250079B81B /* MainCollectionCell.swift in Sources */,
 				44E179792C342EF5003901CC /* AddTodoHeaderTableCell.swift in Sources */,
 				44E179762C342B16003901CC /* AddTodoViewController.swift in Sources */,
 				44E1797B2C343342003901CC /* AddTodoTableCell.swift in Sources */,
 				44E1796F2C341319003901CC /* BaseTableViewCell.swift in Sources */,
 				445BE0812C355A000079B81B /* TagViewController.swift in Sources */,
+				445BE0882C3570650079B81B /* MainViewController.swift in Sources */,
 				44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */,
 				44E1796D2C3412CE003901CC /* ListTableViewCell.swift in Sources */,
 			);

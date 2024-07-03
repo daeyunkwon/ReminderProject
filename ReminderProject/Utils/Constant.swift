@@ -19,6 +19,16 @@ enum Constant {
         static let circle = UIImage(systemName: "circle")
         
         static let chevronRight = UIImage(systemName: "chevron.right")
+        
+        static let calendarCircleFill = UIImage(systemName: "calendar.circle.fill")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white, Constant.Color.customRed]))
+        
+        static let trayCircleFill = UIImage(systemName: "tray.circle.fill")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white, Constant.Color.gray]))
+        
+        static let leafCircleFill = UIImage(systemName: "leaf.circle.fill")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white, Constant.Color.blue]))
+        
+        static let flagCircleFill = UIImage(systemName: "flag.circle.fill")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white, Constant.Color.customYellow]))
+        
+        static let plusCircleFill = UIImage(systemName: "plus.circle.fill")
     }
     
     enum Color {
@@ -28,6 +38,8 @@ enum Constant {
         static let gray = UIColor.systemGray
         static let darkGary = UIColor.darkGray
         static let grayForBackView = UIColor.quaternaryLabel
+        static let customRed = UIColor(red: 255/255, green: 69/255, blue: 58/255, alpha: 1)
+        static let customYellow = UIColor(red: 255/255, green: 159/255, blue: 11/255, alpha: 1)
     }
     
     
