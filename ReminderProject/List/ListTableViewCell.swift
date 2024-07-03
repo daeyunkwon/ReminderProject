@@ -94,6 +94,33 @@ final class ListTableViewCell: BaseTableViewCell {
         tagLabel.text = nil
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        DispatchQueue.main.async {
+            self.contentView.alpha = 1.0
+            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
+                self.contentView.alpha = 0.5
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        DispatchQueue.main.async {
+            self.contentView.alpha = 0.5
+            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
+                self.contentView.alpha = 1.0
+            }
+        }
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        DispatchQueue.main.async {
+            self.contentView.alpha = 0.5
+            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
+                self.contentView.alpha = 1.0
+            }
+        }
+    }
+    
     //MARK: - Init
     
     override final func configureLayout() {
