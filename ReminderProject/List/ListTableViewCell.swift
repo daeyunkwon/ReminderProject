@@ -20,7 +20,12 @@ final class ListTableViewCell: BaseTableViewCell {
             guard let data = reminder else { return }
             titleLabel.text = data.todoTitle
             contentLabel.text = data.todoContent
-            deadlineLabel.text = Date.makeDateString(date: Date(timeIntervalSince1970: data.deadline ?? 0)) 
+            
+            if data.deadline != nil {
+                deadlineLabel.text = Date.makeDateString(date: Date(timeIntervalSince1970: data.deadline ?? 0))
+            } else {
+                deadlineLabel.text = nil
+            }
             
             updateDisplayImportanceLabel(with: data.priority)
             updateDisplayCheckButton(isDone: data.isDone)

@@ -15,7 +15,7 @@ final class ListViewController: BaseViewController {
 
     //MARK: - Properties
     
-    private var list: Results<Reminder>!
+    var list: Results<Reminder>!
     
     //MARK: - UI Components
     
@@ -62,11 +62,6 @@ final class ListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupData()
-    }
-    
-    private func setupData() {
-        list = REALM_DATABASE.objects(Reminder.self)
     }
     
     override final func setupNavi() {
