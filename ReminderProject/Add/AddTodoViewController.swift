@@ -168,7 +168,7 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.tag.rawValue:
             cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.tag)
         case CellType.priority.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.priority == 1 ? "높음" : priority == 2 ? "보통" : priority == 3 ? "낮음" : nil)
         case CellType.addImage.rawValue:
             cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
         default:
@@ -214,6 +214,20 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
                 }
                 self?.tableView.reloadData()
             }
+            pushViewController(vc)
+        
+        //우선 순위
+        case CellType.priority.rawValue:
+            let vc = PriorityViewController()
+            
+            vc.settingPriority = self.priority
+            print(self.priority)
+            
+            vc.closureForDataSend = {[weak self] sender in
+                self?.priority = sender
+                self?.tableView.reloadData()
+            }
+            
             pushViewController(vc)
         default:
             break

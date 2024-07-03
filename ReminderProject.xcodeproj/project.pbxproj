@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		445BE0812C355A000079B81B /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0802C355A000079B81B /* TagViewController.swift */; };
+		445BE0842C35692A0079B81B /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0832C35692A0079B81B /* PriorityViewController.swift */; };
 		44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794A2C33E697003901CC /* AppDelegate.swift */; };
 		44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794C2C33E697003901CC /* SceneDelegate.swift */; };
 		44E1794F2C33E697003901CC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794E2C33E697003901CC /* ListViewController.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		445BE0802C355A000079B81B /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
+		445BE0832C35692A0079B81B /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
 		44E179472C33E697003901CC /* ReminderProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReminderProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E1794A2C33E697003901CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44E1794C2C33E697003901CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +75,14 @@
 				445BE0802C355A000079B81B /* TagViewController.swift */,
 			);
 			path = Tag;
+			sourceTree = "<group>";
+		};
+		445BE0852C35692E0079B81B /* Priority */ = {
+			isa = PBXGroup;
+			children = (
+				445BE0832C35692A0079B81B /* PriorityViewController.swift */,
+			);
+			path = Priority;
 			sourceTree = "<group>";
 		};
 		44E1793E2C33E697003901CC = {
@@ -161,6 +171,7 @@
 				44E1797A2C343342003901CC /* AddTodoTableCell.swift */,
 				44E1797E2C344E72003901CC /* Date */,
 				445BE0822C355A030079B81B /* Tag */,
+				445BE0852C35692E0079B81B /* Priority */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -261,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445BE0842C35692A0079B81B /* PriorityViewController.swift in Sources */,
 				44E1794F2C33E697003901CC /* ListViewController.swift in Sources */,
 				44E179812C34566C003901CC /* RealmModel.swift in Sources */,
 				44E179622C34095F003901CC /* BaseViewController.swift in Sources */,
