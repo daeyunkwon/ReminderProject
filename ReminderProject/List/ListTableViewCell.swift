@@ -21,6 +21,21 @@ final class ListTableViewCell: BaseTableViewCell {
             titleLabel.text = data.todoTitle
             contentLabel.text = data.todoContent
             deadlineLabel.text = data.deadline
+            
+            updateDisplayImportanceLabel(with: data.priority)
+            updateDisplayCheckButton(isDone: data.isDone)
+            
+            guard let tagString = data.tag else {
+                self.tagLabel.isHidden = true
+                return
+            }
+            
+            if !tagString.isEmpty {
+                self.tagLabel.isHidden = false
+                tagLabel.text = "#\(tagString)"
+            } else {
+                self.tagLabel.isHidden = true
+            }
         }
     }
     
@@ -94,33 +109,6 @@ final class ListTableViewCell: BaseTableViewCell {
         tagLabel.text = nil
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        DispatchQueue.main.async {
-            self.contentView.alpha = 1.0
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
-                self.contentView.alpha = 0.5
-            }
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        DispatchQueue.main.async {
-            self.contentView.alpha = 0.5
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
-                self.contentView.alpha = 1.0
-            }
-        }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        DispatchQueue.main.async {
-            self.contentView.alpha = 0.5
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
-                self.contentView.alpha = 1.0
-            }
-        }
-    }
-    
     //MARK: - Init
     
     override final func configureLayout() {
@@ -174,14 +162,6 @@ final class ListTableViewCell: BaseTableViewCell {
         }
     }
     
-    override final func configureUI() {
-//        importanceLabel.text = "!!!"
-//        titleLabel.text = "키보드 구매"
-//        contentLabel.text = "예븐 키캡 알아보기"
-//        deadlineLabel.text = "8888.8.88"
-//        tagLabel.text = "#공부"
-    }
-    
     //MARK: - Functions
     
     @objc private func checkButtonTapped() {
@@ -189,12 +169,47 @@ final class ListTableViewCell: BaseTableViewCell {
     }
     
     func updateDisplayCheckButton(isDone: Bool) {
-        
         if isDone {
             self.checkButton.setImage(Constant.SymbolImage.checkmarkCircleFill, for: .normal)
         } else {
             self.checkButton.setImage(Constant.SymbolImage.circle, for: .normal)
         }
+        updateDisplay(isDone: isDone)
     }
+    
+    private func updateDisplay(isDone: Bool) {
+        if isDone {
+            [importanceLabel, titleLabel, contentLabel, deadlineLabel, tagLabel].forEach { component in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
+                        component.alpha = 0.4
+                    }
+                }
+            }
+        } else {
+            [importanceLabel, titleLabel, contentLabel, deadlineLabel, tagLabel].forEach { component in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.4, delay: 0, options: .curveLinear) {
+                        component.alpha = 1.0
+                    }
+                }
+            }
+        }
+    }
+    
+    private func updateDisplayImportanceLabel(with priority: Int) {
+        switch priority {
+        case 1:
+            self.importanceLabel.text = "!!!"
+        case 2:
+            self.importanceLabel.text = "!!"
+        case 3:
+            self.importanceLabel.text = "!"
+        default:
+            break
+        }
+    }
+    
+    
 
 }

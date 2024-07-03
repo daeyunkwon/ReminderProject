@@ -108,7 +108,7 @@ final class AddTodoViewController: BaseViewController {
                     dismiss(animated: true)
                 }
             } catch {
-                print(ReminderRealmError.failedToAdd.errorDescription)
+                print(ReminderRealmError.failedToWrite.errorDescription)
                 print(error)
             }
         }

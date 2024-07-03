@@ -9,6 +9,7 @@ import UIKit
 
 import RealmSwift
 import SnapKit
+import Toast
 
 final class ListViewController: BaseViewController {
 
@@ -159,7 +160,23 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
 extension ListViewController: ListTableViewCellDelegate {
     
     func checkButtonTapped(cell: ListTableViewCell) {
-        cell.updateDisplayCheckButton(isDone: Bool.random())
+        do {
+            try REALM_DATABASE.write {
+                if let id = cell.reminder?.id {
+                    if let data = REALM_DATABASE.object(ofType: Reminder.self, forPrimaryKey: id) {
+                        var newValue = cell.reminder?.isDone ?? false
+                        newValue.toggle()
+                        
+                        data.isDone = newValue
+                        cell.updateDisplayCheckButton(isDone: data.isDone)
+                    }
+                }
+            }
+        } catch {
+            print(ReminderRealmError.failedToWrite.errorDescription)
+            print(error)
+            view.makeToast("할 일 상태 변경에 대한 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.")
+        }
     }
 }
 

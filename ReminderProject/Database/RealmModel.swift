@@ -11,14 +11,14 @@ import RealmSwift
 
 enum ReminderRealmError: Error {
     case noRealm
-    case failedToAdd
+    case failedToWrite
     case failedToDelete
     
     var errorDescription: String {
         switch self {
         case .noRealm:
             return "Error: default.realm 파일을 찾는데 실패했습니다."
-        case .failedToAdd:
+        case .failedToWrite:
             return "Error: realm에 데이터 쓰기가 실패했습니다."
         case .failedToDelete:
             return "Error: realm에 데이터 삭제가 실패했습니다."
@@ -51,5 +51,6 @@ class Reminder: Object {
         case deadline
         case tag
         case priority
+        case isDone
     }
 }

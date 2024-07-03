@@ -25,6 +25,7 @@
 		44E1797B2C343342003901CC /* AddTodoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1797A2C343342003901CC /* AddTodoTableCell.swift */; };
 		44E1797D2C344E6E003901CC /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1797C2C344E6E003901CC /* DateViewController.swift */; };
 		44E179812C34566C003901CC /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179802C34566C003901CC /* RealmModel.swift */; };
+		44E179872C3548E9003901CC /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 44E179862C3548E9003901CC /* Toast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44E179872C3548E9003901CC /* Toast in Frameworks */,
 				44E179652C340ADA003901CC /* RealmSwift in Frameworks */,
 				44E179682C340AEA003901CC /* SnapKit in Frameworks */,
 			);
@@ -184,6 +186,7 @@
 			packageProductDependencies = (
 				44E179642C340ADA003901CC /* RealmSwift */,
 				44E179672C340AEA003901CC /* SnapKit */,
+				44E179862C3548E9003901CC /* Toast */,
 			);
 			productName = ReminderProject;
 			productReference = 44E179472C33E697003901CC /* ReminderProject.app */;
@@ -216,6 +219,7 @@
 			packageReferences = (
 				44E179632C340ADA003901CC /* XCRemoteSwiftPackageReference "realm-swift" */,
 				44E179662C340AEA003901CC /* XCRemoteSwiftPackageReference "SnapKit" */,
+				44E179852C3548E9003901CC /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 			);
 			productRefGroup = 44E179482C33E697003901CC /* Products */;
 			projectDirPath = "";
@@ -497,6 +501,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		44E179852C3548E9003901CC /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -509,6 +521,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44E179662C340AEA003901CC /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		44E179862C3548E9003901CC /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44E179852C3548E9003901CC /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
