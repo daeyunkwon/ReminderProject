@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		445BE0812C355A000079B81B /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0802C355A000079B81B /* TagViewController.swift */; };
 		44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794A2C33E697003901CC /* AppDelegate.swift */; };
 		44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794C2C33E697003901CC /* SceneDelegate.swift */; };
 		44E1794F2C33E697003901CC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794E2C33E697003901CC /* ListViewController.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		445BE0802C355A000079B81B /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		44E179472C33E697003901CC /* ReminderProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReminderProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E1794A2C33E697003901CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44E1794C2C33E697003901CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		445BE0822C355A030079B81B /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				445BE0802C355A000079B81B /* TagViewController.swift */,
+			);
+			path = Tag;
+			sourceTree = "<group>";
+		};
 		44E1793E2C33E697003901CC = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +160,7 @@
 				44E179782C342EF5003901CC /* AddTodoHeaderTableCell.swift */,
 				44E1797A2C343342003901CC /* AddTodoTableCell.swift */,
 				44E1797E2C344E72003901CC /* Date */,
+				445BE0822C355A030079B81B /* Tag */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -263,6 +274,7 @@
 				44E179762C342B16003901CC /* AddTodoViewController.swift in Sources */,
 				44E1797B2C343342003901CC /* AddTodoTableCell.swift in Sources */,
 				44E1796F2C341319003901CC /* BaseTableViewCell.swift in Sources */,
+				445BE0812C355A000079B81B /* TagViewController.swift in Sources */,
 				44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */,
 				44E1796D2C3412CE003901CC /* ListTableViewCell.swift in Sources */,
 			);

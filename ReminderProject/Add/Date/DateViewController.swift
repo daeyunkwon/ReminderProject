@@ -13,7 +13,11 @@ final class DateViewController: BaseViewController {
     
     //MARK: - Properties
     
-    var closureForDateSend: ((String) -> Void) = { sender in }
+    var closureForDateSend: ((String?) -> Void) = { sender in }
+    
+    var selectedDateString: String?
+    
+    var selectedDate: Date?
     
     //MARK: - UI Components
     
@@ -28,6 +32,16 @@ final class DateViewController: BaseViewController {
     }()
     
     //MARK: - Life Cycle
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.closureForDateSend(selectedDateString)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.datePicker.date = self.selectedDate ?? Date()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +75,6 @@ final class DateViewController: BaseViewController {
     @objc private func datePickerValueChanged() {
         let date = datePicker.date
         let dateString = Date.makeDateString(date: date)
-        self.closureForDateSend(dateString)
+        self.selectedDateString = dateString
     }
 }

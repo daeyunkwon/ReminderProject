@@ -175,6 +175,14 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
         case CellType.deadline.rawValue:
             let vc = DateViewController()
+            if let date = self.deadline {
+                let myFormatter = DateFormatter()
+                myFormatter.dateFormat = "yyyy.MM.dd(EEE)"
+                myFormatter.locale = Locale(identifier: "ko-KR")
+                let date = myFormatter.date(from: date) ?? Date()
+                vc.selectedDate = date
+            }
+            
             vc.closureForDateSend = {[weak self] sender in
                 self?.deadline = sender
                 self?.tableView.reloadData()

@@ -20,7 +20,7 @@ final class AddTodoTableCell: BaseTableViewCell {
     private let backView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 10
-        view.backgroundColor = Constant.Color.quaternaryLabel
+        view.backgroundColor = Constant.Color.grayForBackView
         return view
     }()
     
