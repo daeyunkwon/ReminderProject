@@ -34,6 +34,7 @@ class Reminder: Object {
     @Persisted var deadline: String?
     @Persisted var tag: String?
     @Persisted var priority: Int
+    @Persisted var isDone: Bool
     
     convenience init(todoTitle: String, todoContent: String? = nil, deadline: String? = nil) {
         self.init()
@@ -41,6 +42,7 @@ class Reminder: Object {
         self.todoContent = todoContent
         self.deadline = deadline
         self.priority = 3 //우선순위 제일 낮음
+        self.isDone = false
     }
     
     enum Key: String {
