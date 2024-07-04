@@ -120,12 +120,34 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let flag = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, flag: @escaping (Bool) -> Void) in
+            
+            do {
+                try REALM_DATABASE.write {
+                    var newValue: Bool
+                    if self.reminders[indexPath.row].flag {
+                        newValue = false
+                    } else {
+                        newValue = true
+                    }
+                    REALM_DATABASE.create(Reminder.self, value: ["id": self.reminders[indexPath.row].id, "flag": newValue], update: .modified)
+                }
+            } catch {
+                print(ReminderRealmError.failedToWrite.errorDescription)
+                print(error)
+            }
+            
+            flag(true)
+        }
+        
         let delete = UIContextualAction(style: .normal, title: "삭제") { (UIContextualAction, UIView, delete: @escaping (Bool) -> Void) in
             
             self.showAlert(title: "삭제", message: "삭제하시겠습니까?", cancelTitle: "취소", buttonTitle: "삭제하기", buttonStyle: .destructive) { okAction in
                 do {
                     try REALM_DATABASE.write {
                         REALM_DATABASE.delete(self.reminders[indexPath.row])
+                        self.reminders.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .right)
                     }
                 } catch {
@@ -140,7 +162,14 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         delete.backgroundColor = .systemRed
         delete.image = UIImage(systemName: "trash")
         
-        let config = UISwipeActionsConfiguration(actions: [delete])
+        flag.backgroundColor = .systemOrange
+        if reminders[indexPath.row].flag {
+            flag.image = UIImage(systemName: "flag.fill")
+        } else {
+            flag.image = UIImage(systemName: "flag")
+        }
+        
+        let config = UISwipeActionsConfiguration(actions: [delete, flag])
         config.performsFirstActionWithFullSwipe = false
         return config
     }
