@@ -15,7 +15,16 @@ final class ListViewController: BaseViewController {
 
     //MARK: - Properties
     
-    var list: Results<Reminder>!
+    var reminders: [Reminder] = []
+    
+    enum ViewType: String {
+        case today = "오늘"
+        case scheduled = "예정"
+        case all = "전체"
+        case flag = "깃발 표시"
+        case done = "완료됨"
+    }
+    var viewType: ViewType = .all
     
     //MARK: - UI Components
     
@@ -31,27 +40,27 @@ final class ListViewController: BaseViewController {
     private var itemsForMenu: [UIAction] {
         let filteredAll = UIAction(title: "전체 보기") { [weak self] _ in
             guard let self else { return }
-            list = REALM_DATABASE.objects(Reminder.self)
+            reminders = Array(REALM_DATABASE.objects(Reminder.self))
             self.tableView.reloadData()
         }
         
         let filteredDeadline = UIAction(title: "마감일 순으로 보기") { [weak self] _ in
             guard let self else { return }
-            list = REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true)
+            reminders = Array(REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true))
             self.tableView.reloadData()
         }
         
         let filteredTitle = UIAction(title: "제목 순으로 보기") { [weak self] _ in
             guard let self else { return }
-            list = REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.todoTitle.rawValue, ascending: true)
+            reminders = Array(REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.todoTitle.rawValue, ascending: true))
             self.tableView.reloadData()
         }
         
         let filteredPriority = UIAction(title: "우선순위 낮음만 보기") { [weak self] _ in
             guard let self else { return }
-            list = REALM_DATABASE.objects(Reminder.self).where {
+            reminders = Array(REALM_DATABASE.objects(Reminder.self).where {
                 $0.priority == 3
-            }.sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true)
+            }.sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true))
             self.tableView.reloadData()
         }
         
@@ -65,7 +74,8 @@ final class ListViewController: BaseViewController {
     }
     
     override final func setupNavi() {
-        navigationItem.title = "전체"
+        
+        navigationItem.title = viewType.rawValue
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let menu = UIMenu(title: "정렬", children: self.itemsForMenu)
@@ -84,18 +94,6 @@ final class ListViewController: BaseViewController {
     override final func configureUI() {
         super.configureUI()
     }
-    
-    //MARK: - Functions
-    
-    @objc private func leftBarButtonTapped() {
-        let vc = AddTodoViewController()
-        vc.closureForListVC = {[weak self] in
-            guard let self else { return }
-            self.tableView.reloadData()
-        }
-        let navi = UINavigationController(rootViewController: vc)
-        present(navi, animated: true)
-    }
 }
 
 //MARK: - UITableViewDataSource, UITableViewDelegate
@@ -107,7 +105,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.list.count
+        return self.reminders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -116,7 +114,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.delegate = self
-        cell.reminder = list[indexPath.row]
+        cell.reminder = reminders[indexPath.row]
         
         return cell
     }
@@ -127,7 +125,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             self.showAlert(title: "삭제", message: "삭제하시겠습니까?", cancelTitle: "취소", buttonTitle: "삭제하기", buttonStyle: .destructive) { okAction in
                 do {
                     try REALM_DATABASE.write {
-                        REALM_DATABASE.delete(self.list[indexPath.row])
+                        REALM_DATABASE.delete(self.reminders[indexPath.row])
                         self.tableView.deleteRows(at: [indexPath], with: .right)
                     }
                 } catch {

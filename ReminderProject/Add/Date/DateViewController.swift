@@ -13,9 +13,7 @@ final class DateViewController: BaseViewController {
     
     //MARK: - Properties
     
-    var closureForDateSend: ((Double?) -> Void) = { sender in }
-    
-    var selectedDateString: Double?
+    var closureForDateSend: ((Date?) -> Void) = { sender in }
     
     var selectedDate: Date?
     
@@ -35,7 +33,7 @@ final class DateViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.closureForDateSend(selectedDateString)
+        self.closureForDateSend(selectedDate)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +72,6 @@ final class DateViewController: BaseViewController {
     
     @objc private func datePickerValueChanged() {
         let date = datePicker.date
-        self.selectedDateString = date.timeIntervalSince1970
+        self.selectedDate = date
     }
 }

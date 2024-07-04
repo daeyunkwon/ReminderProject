@@ -31,13 +31,13 @@ class Reminder: Object {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var todoTitle: String
     @Persisted var todoContent: String?
-    @Persisted var deadline: Double?
+    @Persisted var deadline: Date?
     @Persisted var tag: String?
     @Persisted var priority: Int //우선순위 기준 -> 1: 높음, 2: 보통, 3: 낮음
     @Persisted var isDone: Bool
     @Persisted var flag: Bool
     
-    convenience init(todoTitle: String, todoContent: String? = nil, deadline: Double? = nil, tag: String? = nil, priority: Int) {
+    convenience init(todoTitle: String, todoContent: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: Int) {
         self.init()
         self.todoTitle = todoTitle
         self.todoContent = todoContent

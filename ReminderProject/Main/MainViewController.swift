@@ -21,12 +21,12 @@ final class MainViewController: BaseViewController {
         case flag
         case done
     }
-    
-    private var todayList: Results<Reminder>!
-    private var scheduledList: Results<Reminder>!
-    private var allList: Results<Reminder>!
-    private var flagList: Results<Reminder>!
-    private var doneList: Results<Reminder>!
+    private var list: Results<Reminder>!
+    private var todayList: [Reminder] = []
+    private var scheduledList: [Reminder] = []
+    private var allList: [Reminder] = []
+    private var flagList: [Reminder] = []
+    private var doneList: [Reminder] = []
     
     //MARK: - UI Components
     
@@ -65,6 +65,8 @@ final class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.title = "전체"
+        setupData()
+        self.collectionView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,31 +80,51 @@ final class MainViewController: BaseViewController {
     }
     
     private func setupData() {
-        let list = REALM_DATABASE.objects(Reminder.self)
+        self.list = REALM_DATABASE.objects(Reminder.self)
+        let list = Array(self.list)
+        
+        //전체
         self.allList = list
         
-//        var date = Date()
-//        let today = Date.makeDateString(date: date)
-//        self.todayList = list.where({ reminder in
-//            
-//            let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-//            let compare = Calendar.current.dateComponents([.year, .month, .day], from: Date(timeIntervalSince1970: reminder.deadline))
-//        })
+        //오늘
+        self.todayList = list.filter({ reminder in
+            if reminder.deadline != nil {
+                let calendar = Calendar.current
+                let today = calendar.dateComponents([.year, .month, .day], from: Date())
+                let compare = calendar.dateComponents([.year, .month, .day], from: reminder.deadline ?? Date())
+                
+                if today.year == compare.year && today.month == compare.month && today.day == compare.day {
+                    return true
+                }
+                return false
+            }
+            return false
+        })
         
+        //예정
+        self.scheduledList = list.filter({ reminder in
+            if reminder.deadline != nil {
+                let calendar = Calendar.current
+                let today = calendar.dateComponents([.year, .month, .day], from: Date())
+                let compare = calendar.dateComponents([.year, .month, .day], from: reminder.deadline ?? Date())
+                
+                if today.year ?? 0 <= compare.year ?? 0 && today.month ?? 0 <= compare.month ?? 0 && today.day ?? 0 < compare.day ?? 0 {
+                    return true
+                }
+                return false
+            }
+            return false
+        })
         
+        //깃발
+        self.flagList = list.filter {
+            $0.flag == true
+        }
         
-        
-//        self.scheduledList = list.filter { r in
-//            let deadline = Date.makeStringToDate(str: r.deadline ?? "")
-//            if deadline.timeIntervalSince1970 < date.timeIntervalSince1970 {
-//                return true
-//            }
-//        }
-//        
-//        self.scheduledList = list.where({ reminder in
-//            let date = Date.makeStringToDate(str: reminder.deadline)
-//        })
-        
+        //완료됨
+        self.doneList = list.filter {
+            $0.isDone == true
+        }
     }
     
     override func setupNavi() {
@@ -142,13 +164,19 @@ final class MainViewController: BaseViewController {
     }
     
     @objc func newAddButtonTapped() {
-        print(#function)
+        let vc = AddTodoViewController()
+        vc.closureForListVC = {[weak self] in
+            guard let self else { return }
+            self.setupData()
+            self.collectionView.reloadData()
+        }
+        let navi = UINavigationController(rootViewController: vc)
+        present(navi, animated: true)
     }
     
     @objc func listAddButtonTapped() {
         print(#function)
     }
-
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
@@ -185,15 +213,15 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         
         switch indexPath.row {
         case CellType.today.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: 0)
+            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.todayList.count)
         case CellType.scheduled.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: 0)
+            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.scheduledList.count)
         case CellType.all.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: allList.count)
+            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.allList.count)
         case CellType.flag.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: 0)
+            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.flagList.count)
         case CellType.done.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: 0)
+            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.doneList.count)
         default:
             break
         }
@@ -204,19 +232,34 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.row {
         case CellType.today.rawValue:
-            print("오늘 셀 선택됨")
+            let vc = ListViewController()
+            vc.viewType = .today
+            vc.reminders = todayList
+            pushViewController(vc)
+            
         case CellType.scheduled.rawValue:
-            print("예정 셀 선택됨")
+            let vc = ListViewController()
+            vc.viewType = .scheduled
+            vc.reminders = scheduledList
+            pushViewController(vc)
         
         case CellType.all.rawValue:
             let vc = ListViewController()
-            vc.list = allList
+            vc.viewType = .all
+            vc.reminders = allList
             pushViewController(vc)
             
         case CellType.flag.rawValue:
-            print("깃발 표시 셀 선택됨")
+            let vc = ListViewController()
+            vc.viewType = .flag
+            vc.reminders = flagList
+            pushViewController(vc)
+            
         case CellType.done.rawValue:
-            print("완료됨 셀 선택됨")
+            let vc = ListViewController()
+            vc.viewType = .done
+            vc.reminders = doneList
+            pushViewController(vc)
         default:
             break
         }

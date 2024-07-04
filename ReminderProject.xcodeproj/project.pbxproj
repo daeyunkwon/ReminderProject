@@ -12,6 +12,7 @@
 		445BE0882C3570650079B81B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0872C3570650079B81B /* MainViewController.swift */; };
 		445BE08A2C3588250079B81B /* MainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0892C3588250079B81B /* MainCollectionCell.swift */; };
 		445BE08C2C35886D0079B81B /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE08B2C35886D0079B81B /* BaseCollectionViewCell.swift */; };
+		445BE0932C368FC40079B81B /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 44E179642C340ADA003901CC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794A2C33E697003901CC /* AppDelegate.swift */; };
 		44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794C2C33E697003901CC /* SceneDelegate.swift */; };
 		44E1794F2C33E697003901CC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794E2C33E697003901CC /* ListViewController.swift */; };
@@ -33,6 +34,20 @@
 		44E179872C3548E9003901CC /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 44E179862C3548E9003901CC /* Toast */; };
 		44E179892C354F4F003901CC /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179882C354F4F003901CC /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		445BE0942C368FC40079B81B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				445BE0932C368FC40079B81B /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		445BE0802C355A000079B81B /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +234,7 @@
 				44E179432C33E697003901CC /* Sources */,
 				44E179442C33E697003901CC /* Frameworks */,
 				44E179452C33E697003901CC /* Resources */,
+				445BE0942C368FC40079B81B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

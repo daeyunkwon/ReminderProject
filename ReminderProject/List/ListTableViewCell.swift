@@ -22,7 +22,7 @@ final class ListTableViewCell: BaseTableViewCell {
             contentLabel.text = data.todoContent
             
             if data.deadline != nil {
-                deadlineLabel.text = Date.makeDateString(date: Date(timeIntervalSince1970: data.deadline ?? 0))
+                deadlineLabel.text = Date.makeDateString(date: data.deadline ?? Date())
             } else {
                 deadlineLabel.text = nil
             }
