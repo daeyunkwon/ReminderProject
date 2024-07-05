@@ -76,7 +76,8 @@ final class CalendarViewController: BaseViewController {
     override func configureLayout() {
         view.addSubview(calendar)
         calendar.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(-40)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(view.bounds.width * 1.5)
         }
         
