@@ -15,8 +15,22 @@ final class ListTableViewCell: BaseTableViewCell {
     
     weak var delegate: ListTableViewCellDelegate?
     
+    enum CellType {
+        case usingListView
+        case usingCalendarView
+    }
+    var cellType: CellType = .usingListView
+    
     var reminder: Reminder? {
         didSet {
+            switch cellType {
+            case .usingListView:
+                self.checkButton.isHidden = false
+            case .usingCalendarView:
+                self.checkButton.isHidden = true
+                self.contentView.backgroundColor = .systemGray6
+            }
+            
             guard let data = reminder else { return }
             titleLabel.text = data.todoTitle
             contentLabel.text = data.todoContent

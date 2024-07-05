@@ -114,6 +114,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         cell.delegate = self
+        cell.cellType = .usingListView
         cell.reminder = reminders[indexPath.row]
         
         return cell

@@ -132,6 +132,7 @@ final class MainViewController: BaseViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: Constant.Color.gray]
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constant.SymbolImage.ellipsisCircle, style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
     }
     
     override func configureLayout() {
@@ -159,11 +160,16 @@ final class MainViewController: BaseViewController {
     
     //MARK: - Functions
     
-    @objc func rightBarButtonTapped() {
+    @objc private func leftBarButtonTapped() {
+        let vc = CalendarViewController()
+        pushViewController(vc)
+    }
+    
+    @objc private func rightBarButtonTapped() {
         print(#function)
     }
     
-    @objc func newAddButtonTapped() {
+    @objc private func newAddButtonTapped() {
         let vc = AddTodoViewController()
         vc.closureForListVC = {[weak self] in
             guard let self else { return }
@@ -174,7 +180,7 @@ final class MainViewController: BaseViewController {
         present(navi, animated: true)
     }
     
-    @objc func listAddButtonTapped() {
+    @objc private func listAddButtonTapped() {
         print(#function)
     }
 }
