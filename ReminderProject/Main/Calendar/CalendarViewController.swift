@@ -30,7 +30,7 @@ final class CalendarViewController: BaseViewController {
         calendar.scope = .month
         calendar.locale = Locale(identifier: "ko_KR")
         calendar.appearance.headerDateFormat = "yyyy년 M월"
-        calendar.appearance.headerTitleColor = .label
+        calendar.headerHeight = 0
         calendar.appearance.titleDefaultColor = .label //평일
         calendar.appearance.titleWeekendColor = .label //주말
         calendar.appearance.selectionColor = Constant.Color.customSkyBlue
@@ -53,6 +53,14 @@ final class CalendarViewController: BaseViewController {
         setupData()
         setupSwipeGesture()
         setupTableView()
+    }
+    
+    override func setupNavi() {
+        let date = calendar.currentPage
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy년 M월"
+        navigationItem.title = formatter.string(from: date)
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     private func setupData() {
@@ -80,7 +88,7 @@ final class CalendarViewController: BaseViewController {
     override func configureLayout() {
         view.addSubview(calendar)
         calendar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(-40)
+            make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(view.bounds.width * 1.5)
         }
@@ -108,17 +116,6 @@ final class CalendarViewController: BaseViewController {
         else if swipe.direction == .down {
             calendar.setScope(.month, animated: true)
         }
-    }
-    
-    func updateHeaderTitle(for date: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 M월"
-        // 날짜를 포맷에 맞게 변환하여 헤더에 표시
-        calendar.appearance.headerDateFormat = dateFormatter.dateFormat
-        calendar.appearance.headerTitleColor = .black // 헤더 텍스트 색상 설정 가능
-        
-        let dateString = dateFormatter.string(from: date)
-        
     }
 }
 
@@ -158,9 +155,13 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         // 사용자가 선택한 달을 업데이트
         currentSelectedMonth = calendar.currentPage
-        // appearance 업데이트 메서드 호출
+        
+        let date = calendar.currentPage
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy년 M월"
+        navigationItem.title = formatter.string(from: date)
+        
         calendar.reloadData()
-        updateHeaderTitle(for: calendar.currentPage)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
