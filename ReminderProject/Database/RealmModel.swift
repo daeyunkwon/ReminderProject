@@ -36,8 +36,9 @@ class Reminder: Object {
     @Persisted var priority: Int //우선순위 기준 -> 1: 높음, 2: 보통, 3: 낮음
     @Persisted var isDone: Bool
     @Persisted var flag: Bool
+    @Persisted var imageID: String?
     
-    convenience init(todoTitle: String, todoContent: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: Int) {
+    convenience init(todoTitle: String, todoContent: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: Int, imageID: String? = nil) {
         self.init()
         self.todoTitle = todoTitle
         self.todoContent = todoContent
@@ -46,6 +47,7 @@ class Reminder: Object {
         self.priority = priority
         self.isDone = false
         self.flag = false
+        self.imageID = imageID
     }
     
     enum Key: String {
