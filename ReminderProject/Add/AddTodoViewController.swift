@@ -80,6 +80,7 @@ final class AddTodoViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationItem.title = ""
+        view.endEditing(true)
     }
     
     override func viewDidLoad() {
