@@ -55,6 +55,8 @@ final class AddTodoViewController: BaseViewController {
         }
     }
     
+    var contentTextView: UITextView?
+    
     //MARK: - UI Components
     
     private lazy var tableView: UITableView = {
@@ -64,6 +66,7 @@ final class AddTodoViewController: BaseViewController {
         tv.delegate = self
         tv.register(AddTodoTableCell.self, forCellReuseIdentifier: AddTodoTableCell.identifier)
         tv.register(AddTodoHeaderTableCell.self, forHeaderFooterViewReuseIdentifier: AddTodoHeaderTableCell.identifier)
+        tv.keyboardDismissMode = .onDrag
         return tv
     }()
     

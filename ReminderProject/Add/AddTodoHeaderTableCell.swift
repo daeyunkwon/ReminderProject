@@ -49,6 +49,22 @@ final class AddTodoHeaderTableCell: UITableViewHeaderFooterView {
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.returnKeyType = .default
+        
+        let accessory = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        lazy var doneButton = UIButton(type: .system)
+        doneButton.addTarget(self, action: #selector(doneButtonInsideAccessoryTapped), for: .touchUpInside)
+        doneButton.setTitle("완료", for: .normal)
+        doneButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        accessory.addSubview(doneButton)
+        doneButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(accessory.snp.trailing).offset(-20)
+            make.width.equalTo(50)
+            make.height.equalTo(20)
+        }
+        accessory.backgroundColor = .lightGrayToDarkGray
+        tf.inputAccessoryView = accessory
+        
         return tf
     }()
     
@@ -105,6 +121,10 @@ final class AddTodoHeaderTableCell: UITableViewHeaderFooterView {
             make.top.equalTo(separatorView.snp.bottom).offset(12)
             make.leading.equalToSuperview().inset(22)
         }
+    }
+    
+    @objc private func doneButtonInsideAccessoryTapped() {
+        contentTextField.resignFirstResponder()
     }
 }
 
