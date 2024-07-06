@@ -18,6 +18,8 @@ final class CalendarViewController: BaseViewController {
     private var eventList: [Reminder] = []
     private var filterdRemiders: [Reminder] = []
     
+    var currentSelectedMonth = Date() //현재 페이지가 몇 월인지에 대한 정보
+    
     //MARK: - UI Components
     
     private lazy var calendar: FSCalendar = {
@@ -30,13 +32,15 @@ final class CalendarViewController: BaseViewController {
         calendar.appearance.headerDateFormat = "YYYY년 M월"
         calendar.appearance.headerTitleColor = .label
         calendar.appearance.titleDefaultColor = .label //평일
-        calendar.appearance.titleWeekendColor = .gray //주말
+        calendar.appearance.titleWeekendColor = .label //주말
         calendar.appearance.selectionColor = Constant.Color.customSkyBlue
         calendar.appearance.titleSelectionColor = .white
         calendar.appearance.weekdayFont = .boldSystemFont(ofSize: 14)
         calendar.appearance.caseOptions = .weekdayUsesSingleUpperCase
         calendar.appearance.weekdayTextColor = .label
         calendar.appearance.titleFont = .boldSystemFont(ofSize: 12)
+        calendar.calendarWeekdayView.weekdayLabels[0].textColor = UIColor.red
+        
         return calendar
     }()
     
@@ -130,14 +134,39 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-//MARK: - FSCalendarDelegate, FSCalendarDataSource
+//MARK: - FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance
 
-extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
+extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
         if Calendar.current.isDateInToday(date) {
             return "오늘"
         }
         return nil
+    }
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        // 사용자가 선택한 달을 업데이트
+        currentSelectedMonth = calendar.currentPage
+        // appearance 업데이트 메서드 호출
+        calendar.reloadData()
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        let day = Calendar.current.component(.weekday, from: date) - 1
+        
+        let current = Calendar.current.dateComponents([.year, .month, .day], from: currentSelectedMonth) //현재 페이지
+        let compare = Calendar.current.dateComponents([.year, .month, .day], from: date) //비교하고 싶은 날짜
+        
+        if Calendar.current.shortWeekdaySymbols[day] == "일" || Calendar.current.shortWeekdaySymbols[day] == "Sun" && current.month  == compare.month {
+            return .systemRed //현재 선택한 월에 포함되는 일요일
+        } else if Calendar.current.shortWeekdaySymbols[day] == "일" || Calendar.current.shortWeekdaySymbols[day] == "Sun" {
+            return .systemRed.withAlphaComponent(0.5) //현재 선택한 월에 포함되지 않는 일요일
+        }
+        else if Calendar.current.isDateInToday(date) {
+            return .white //오늘
+        } else {
+            return nil //그 외 색상 설정 안함
+        }
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {

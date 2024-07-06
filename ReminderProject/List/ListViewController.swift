@@ -133,7 +133,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let flag = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, flag: @escaping (Bool) -> Void) in
+        let flag = UIContextualAction(style: .normal, title: "깃발") { (UIContextualAction, UIView, flag: @escaping (Bool) -> Void) in
             
             do {
                 try REALM_DATABASE.write {
