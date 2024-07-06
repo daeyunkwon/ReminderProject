@@ -115,9 +115,17 @@
 			children = (
 				445BE0872C3570650079B81B /* MainViewController.swift */,
 				445BE0892C3588250079B81B /* MainCollectionCell.swift */,
-				445BE0952C36AC9F0079B81B /* CalendarViewController.swift */,
+				445BE09A2C37ECC70079B81B /* Calendar */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		445BE09A2C37ECC70079B81B /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				445BE0952C36AC9F0079B81B /* CalendarViewController.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		44E1793E2C33E697003901CC = {

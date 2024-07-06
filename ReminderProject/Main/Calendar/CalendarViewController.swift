@@ -143,8 +143,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         for event in eventList {
             let calendar = Calendar.current
-            let current = calendar.dateComponents([.year, .month, .day], from: date)
-            let compare = calendar.dateComponents([.year, .month, .day], from: event.deadline ?? Date())
+            let current = calendar.dateComponents([.year, .month, .day], from: date) //오늘
+            let compare = calendar.dateComponents([.year, .month, .day], from: event.deadline ?? Date()) //비교하고 싶은 날짜
             
             if current.year == compare.year && current.month == compare.month && current.day == compare.day {
                 return 1
@@ -155,7 +155,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
-        let start = Calendar.current.startOfDay(for: date)
+        let start: Date = Calendar.current.startOfDay(for: date)
         
         let end: Date = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
         

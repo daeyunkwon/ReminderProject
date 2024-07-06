@@ -16,6 +16,7 @@ final class ListViewController: BaseViewController {
     //MARK: - Properties
     
     var reminders: [Reminder] = []
+    var filterdReminders: [Reminder] = []
     
     enum ViewType: String {
         case today = "오늘"
@@ -40,27 +41,36 @@ final class ListViewController: BaseViewController {
     private var itemsForMenu: [UIAction] {
         let filteredAll = UIAction(title: "전체 보기") { [weak self] _ in
             guard let self else { return }
-            reminders = Array(REALM_DATABASE.objects(Reminder.self))
+            filterdReminders = reminders
             self.tableView.reloadData()
         }
         
         let filteredDeadline = UIAction(title: "마감일 순으로 보기") { [weak self] _ in
             guard let self else { return }
-            reminders = Array(REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true))
+            filterdReminders = reminders.filter({ reminder in
+                if reminder.deadline != nil {
+                    return true
+                }
+                return false
+            }).sorted(by: {
+                $0.deadline ?? Date() < $1.deadline ?? Date()
+            })
             self.tableView.reloadData()
         }
         
         let filteredTitle = UIAction(title: "제목 순으로 보기") { [weak self] _ in
             guard let self else { return }
-            reminders = Array(REALM_DATABASE.objects(Reminder.self).sorted(byKeyPath: Reminder.Key.todoTitle.rawValue, ascending: true))
+            filterdReminders = reminders.sorted(by: {
+                $0.todoTitle < $1.todoTitle
+            })
             self.tableView.reloadData()
         }
         
         let filteredPriority = UIAction(title: "우선순위 낮음만 보기") { [weak self] _ in
             guard let self else { return }
-            reminders = Array(REALM_DATABASE.objects(Reminder.self).where {
-                $0.priority == 3
-            }.sorted(byKeyPath: Reminder.Key.deadline.rawValue, ascending: true))
+            filterdReminders = reminders.filter {
+                $0.priority == 3 ? true : false
+            }
             self.tableView.reloadData()
         }
         
@@ -71,6 +81,7 @@ final class ListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.filterdReminders = reminders
     }
     
     override final func setupNavi() {
@@ -105,7 +116,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.reminders.count
+        return self.filterdReminders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,7 +126,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell.delegate = self
         cell.cellType = .usingListView
-        cell.reminder = reminders[indexPath.row]
+        cell.reminder = filterdReminders[indexPath.row]
         
         return cell
     }
@@ -127,12 +138,12 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             do {
                 try REALM_DATABASE.write {
                     var newValue: Bool
-                    if self.reminders[indexPath.row].flag {
+                    if self.filterdReminders[indexPath.row].flag {
                         newValue = false
                     } else {
                         newValue = true
                     }
-                    REALM_DATABASE.create(Reminder.self, value: ["id": self.reminders[indexPath.row].id, "flag": newValue], update: .modified)
+                    REALM_DATABASE.create(Reminder.self, value: ["id": self.filterdReminders[indexPath.row].id, "flag": newValue], update: .modified)
                 }
             } catch {
                 print(ReminderRealmError.failedToWrite.errorDescription)
@@ -147,8 +158,8 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             self.showAlert(title: "삭제", message: "삭제하시겠습니까?", cancelTitle: "취소", buttonTitle: "삭제하기", buttonStyle: .destructive) { okAction in
                 do {
                     try REALM_DATABASE.write {
-                        REALM_DATABASE.delete(self.reminders[indexPath.row])
-                        self.reminders.remove(at: indexPath.row)
+                        REALM_DATABASE.delete(self.filterdReminders[indexPath.row])
+                        self.filterdReminders.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .right)
                     }
                 } catch {
@@ -164,7 +175,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         delete.image = UIImage(systemName: "trash")
         
         flag.backgroundColor = .systemOrange
-        if reminders[indexPath.row].flag {
+        if filterdReminders[indexPath.row].flag {
             flag.image = UIImage(systemName: "flag.fill")
         } else {
             flag.image = UIImage(systemName: "flag")
