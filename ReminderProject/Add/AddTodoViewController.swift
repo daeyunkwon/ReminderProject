@@ -282,7 +282,7 @@ extension AddTodoViewController: PHPickerViewControllerDelegate {
                     self.tableView.reloadRows(at: [IndexPath(row: CellType.addImage.rawValue, section: 0)], with: .automatic)
                 }
             }
-        } else {
+        } else { //취소 버튼 선택한 경우
             self.dismiss(animated: true)
         }
     }

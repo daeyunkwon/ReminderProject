@@ -48,7 +48,7 @@ final class AddTodoHeaderTableCell: UITableViewHeaderFooterView {
         tf.font = .systemFont(ofSize: 16)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
-        tf.returnKeyType = .done
+        tf.returnKeyType = .default
         return tf
     }()
     
@@ -129,5 +129,13 @@ extension AddTodoHeaderTableCell: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.closureForDateSend(titleTextField.text, contentTextField.text)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == titleTextField {
+            contentTextField.becomeFirstResponder()
+            return true
+        }
+        return false
     }
 }
