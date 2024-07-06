@@ -79,16 +79,22 @@ final class ListViewController: BaseViewController {
     
     //MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = viewType.rawValue
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.filterdReminders = reminders
     }
     
     override final func setupNavi() {
-        
-        navigationItem.title = viewType.rawValue
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
         let menu = UIMenu(title: "정렬", children: self.itemsForMenu)
         let rightBarButton = UIBarButtonItem(title: nil, image: Constant.SymbolImage.ellipsisCircle, primaryAction: nil, menu: menu)
         navigationItem.rightBarButtonItem = rightBarButton
@@ -129,6 +135,24 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.reminder = filterdReminders[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.reminder = self.filterdReminders[indexPath.row]
+        vc.closureForDelete = {[weak self] sender in
+            guard let self = self else { return }
+            for i in 0...reminders.count - 1 {
+                if reminders[i].id == sender.id {
+                    reminders.remove(at: i)
+                }
+            }
+        
+            self.filterdReminders = self.reminders
+            self.tableView.reloadData()
+            
+        }
+        pushViewController(vc)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

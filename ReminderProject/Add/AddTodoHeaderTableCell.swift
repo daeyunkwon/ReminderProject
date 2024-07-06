@@ -123,8 +123,21 @@ final class AddTodoHeaderTableCell: UITableViewHeaderFooterView {
         }
     }
     
+    //MARK: - Functions
+    
     @objc private func doneButtonInsideAccessoryTapped() {
         contentTextField.resignFirstResponder()
+    }
+    
+    func cellConfig(data: Reminder?) {
+        guard let data = data else { return }
+        self.titleTextField.text = data.todoTitle
+        if data.todoContent?.count != 0 {
+            self.contentTextField.text = data.todoContent
+            self.placeholderLabel.isHidden = true
+        } else {
+            self.placeholderLabel.isHidden = false
+        }
     }
 }
 

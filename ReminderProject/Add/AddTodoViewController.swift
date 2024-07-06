@@ -8,13 +8,24 @@
 import UIKit
 import PhotosUI
 
+import RealmSwift
 import SnapKit
+
 
 final class AddTodoViewController: BaseViewController {
     
     //MARK: - Properties
     
+    enum ViewType {
+        case new
+        case edit
+    }
+    var viewType: ViewType = .new
+    
+    var reminder: Reminder?
+    
     var closureForListVC: (() -> Void) = { }
+    var closureForDetailVC: ((Reminder) -> Void) = { sender in }
     
     private var titleText: String? {
         didSet {
@@ -75,7 +86,12 @@ final class AddTodoViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "새로운 할 일"
+        switch viewType {
+        case .new:
+            navigationItem.title = "새로운 할 일"
+        case .edit:
+            navigationItem.title = "수정"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -89,7 +105,16 @@ final class AddTodoViewController: BaseViewController {
     
     override final func setupNavi() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(leftBarButtonTapped))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        
+        var rightTitle: String
+        switch viewType {
+        case .new:
+            rightTitle = "추가"
+        case .edit:
+            rightTitle = "완료"
+        }
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: rightTitle, style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
@@ -103,18 +128,34 @@ final class AddTodoViewController: BaseViewController {
     
     override final func configureUI() {
         super.configureUI()
+        
+        if viewType == .edit {
+            guard let data = self.reminder else { return }
+            titleText = data.todoTitle
+            contentText = data.todoContent
+            deadline = data.deadline
+            tag = data.tag
+            priority = data.priority
+            image = ImageFileManager.shared.loadImageToDocument(filename: data.imageID ?? "")
+        }
     }
     
     //MARK: - Functions
     
     @objc private func leftBarButtonTapped() {
-        self.dismiss(animated: true)
+        switch viewType {
+        case .new:
+            self.dismiss(animated: true)
+        case .edit:
+            popViewController()
+        }
     }
     
     @objc private func rightBarButtonTapped() {
+        guard let title = self.titleText else { return }
         
-        if let title = self.titleText {
-            
+        switch viewType {
+        case .new:
             let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority)
             
             if let image = self.image {
@@ -126,17 +167,45 @@ final class AddTodoViewController: BaseViewController {
             do {
                 try REALM_DATABASE.write {
                     REALM_DATABASE.add(data)
-                    self.closureForListVC()
-                    dismiss(animated: true)
                 }
+                self.closureForListVC()
+                dismiss(animated: true)
             } catch {
                 ImageFileManager.shared.removeImageFromDocument(filename: "\(data.id)") //Document에 저장된 이미지 제거
+                print(ReminderRealmError.failedToWrite.errorDescription)
+                print(error)
+            }
+            
+        case .edit:
+            guard let reminder = self.reminder else { return }
+            
+            do {
+                try REALM_DATABASE.write {
+                    reminder.todoTitle = title
+                    reminder.todoContent = self.contentText
+                    reminder.deadline = self.deadline
+                    reminder.tag = self.tag
+                    reminder.priority = self.priority
+                    
+                    if let image = self.image {
+                        ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(reminder.id)") {
+                            reminder.imageID = "\(reminder.id)"
+                        }
+                    } else {
+                        ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)")
+                    }
+                }
+                self.closureForDetailVC(reminder)
+                popViewController()
+            } catch {
+                ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)") //Document에 저장된 이미지 제거
                 print(ReminderRealmError.failedToWrite.errorDescription)
                 print(error)
             }
         }
     }
 }
+
 
 //MARK: - UITableViewDataSource, UITableViewDelegate
 
@@ -150,6 +219,10 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: AddTodoHeaderTableCell.identifier) as? AddTodoHeaderTableCell else {
             print("Failed to dequeue a AddTodoHeaderTableCell. Using default UIView.")
             return UIView()
+        }
+        
+        if viewType == .edit {
+            header.cellConfig(data: self.reminder)
         }
         
         header.closureForDateSend = {[weak self] titleText, contentText in
