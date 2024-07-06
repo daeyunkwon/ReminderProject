@@ -29,7 +29,7 @@ final class CalendarViewController: BaseViewController {
         calendar.scrollDirection = .horizontal
         calendar.scope = .month
         calendar.locale = Locale(identifier: "ko_KR")
-        calendar.appearance.headerDateFormat = "YYYY년 M월"
+        calendar.appearance.headerDateFormat = "yyyy년 M월"
         calendar.appearance.headerTitleColor = .label
         calendar.appearance.titleDefaultColor = .label //평일
         calendar.appearance.titleWeekendColor = .label //주말
@@ -109,6 +109,17 @@ final class CalendarViewController: BaseViewController {
             calendar.setScope(.month, animated: true)
         }
     }
+    
+    func updateHeaderTitle(for date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 M월"
+        // 날짜를 포맷에 맞게 변환하여 헤더에 표시
+        calendar.appearance.headerDateFormat = dateFormatter.dateFormat
+        calendar.appearance.headerTitleColor = .black // 헤더 텍스트 색상 설정 가능
+        
+        let dateString = dateFormatter.string(from: date)
+        
+    }
 }
 
 //MARK: - UITableViewDataSource, UITableViewDelegate
@@ -149,6 +160,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         currentSelectedMonth = calendar.currentPage
         // appearance 업데이트 메서드 호출
         calendar.reloadData()
+        updateHeaderTitle(for: calendar.currentPage)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
@@ -157,13 +169,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         let current = Calendar.current.dateComponents([.year, .month, .day], from: currentSelectedMonth) //현재 페이지
         let compare = Calendar.current.dateComponents([.year, .month, .day], from: date) //비교하고 싶은 날짜
         
-        if Calendar.current.shortWeekdaySymbols[day] == "일" || Calendar.current.shortWeekdaySymbols[day] == "Sun" && current.month  == compare.month {
+        if Calendar.current.isDateInToday(date) {
+            return .white //오늘
+        } else if Calendar.current.shortWeekdaySymbols[day] == "일" || Calendar.current.shortWeekdaySymbols[day] == "Sun" && current.month  == compare.month {
             return .systemRed //현재 선택한 월에 포함되는 일요일
         } else if Calendar.current.shortWeekdaySymbols[day] == "일" || Calendar.current.shortWeekdaySymbols[day] == "Sun" {
             return .systemRed.withAlphaComponent(0.5) //현재 선택한 월에 포함되지 않는 일요일
-        }
-        else if Calendar.current.isDateInToday(date) {
-            return .white //오늘
         } else {
             return nil //그 외 색상 설정 안함
         }
