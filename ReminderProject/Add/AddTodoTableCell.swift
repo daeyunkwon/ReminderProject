@@ -11,6 +11,13 @@ import SnapKit
 
 final class AddTodoTableCell: BaseTableViewCell {
     
+    //MARK: - Properties
+    
+    enum CellType {
+        case notImage
+        case Image
+    }
+    
     //MARK: - UI Components
     
     private let backView: UIView = {
@@ -30,6 +37,15 @@ final class AddTodoTableCell: BaseTableViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         return label
+    }()
+    
+    private let settingValueImage: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 10
+        iv.clipsToBounds = true
+        iv.tintColor = .lightGray
+        return iv
     }()
     
     private lazy var chevronRightButton: UIButton = {
@@ -61,6 +77,13 @@ final class AddTodoTableCell: BaseTableViewCell {
             make.trailing.equalTo(chevronRightButton.snp.leading).offset(-10)
         }
         
+        backView.addSubview(settingValueImage)
+        settingValueImage.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(chevronRightButton.snp.leading).offset(-10)
+            make.size.equalTo(60)
+        }
+        
         backView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -74,8 +97,19 @@ final class AddTodoTableCell: BaseTableViewCell {
     
     //MARK: - Functions
     
-    func cellConfig(title: String?, settingValue: String?) {
+    func cellConfig(cellType: CellType, title: String?, settingValue: String?, image: UIImage?) {
         self.titleLabel.text = title
-        self.settingValueLabel.text = settingValue
+        
+        switch cellType {
+        case .notImage:
+            self.settingValueLabel.text = settingValue
+            self.settingValueLabel.isHidden = false
+            self.settingValueImage.isHidden = true
+            
+        case .Image:
+            self.settingValueImage.image = image != nil ? image : UIImage(systemName: "photo")
+            self.settingValueImage.isHidden = false
+            self.settingValueLabel.isHidden = true
+        }
     }
 }

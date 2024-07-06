@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 import SnapKit
 
@@ -32,6 +33,7 @@ final class AddTodoViewController: BaseViewController {
     private var deadline: Date?
     private var tag: String?
     private var priority: Int = 3
+    private var image: UIImage?
     
     private enum CellType: Int, CaseIterable {
         case deadline
@@ -108,7 +110,14 @@ final class AddTodoViewController: BaseViewController {
     @objc private func rightBarButtonTapped() {
         
         if let title = self.titleText {
+            
             let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority)
+            
+            if let image = self.image {
+                ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(data.id)") { //Document에 이미지 저장
+                    data.imageID = "\(data.id)"
+                }
+            }
             
             do {
                 try REALM_DATABASE.write {
@@ -117,6 +126,7 @@ final class AddTodoViewController: BaseViewController {
                     dismiss(animated: true)
                 }
             } catch {
+                ImageFileManager.shared.removeImageFromDocument(filename: "\(data.id)") //Document에 저장된 이미지 제거
                 print(ReminderRealmError.failedToWrite.errorDescription)
                 print(error)
             }
@@ -166,17 +176,19 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case CellType.deadline.rawValue:
             if self.deadline != nil {
                 let deadlineString = Date.makeDateString(date: self.deadline ?? Date())
-                cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: deadlineString)
+                cell.cellConfig(cellType: .notImage, title: CellType.allCases[indexPath.row].titleText, settingValue: deadlineString, image: nil)
             } else {
-                cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+                cell.cellConfig(cellType: .notImage, title: CellType.allCases[indexPath.row].titleText, settingValue: nil, image: nil)
             }
             
         case CellType.tag.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.tag)
+            cell.cellConfig(cellType: .notImage, title: CellType.allCases[indexPath.row].titleText, settingValue: self.tag, image: nil)
+        
         case CellType.priority.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: self.priority == 1 ? "높음" : priority == 2 ? "보통" : priority == 3 ? "낮음" : nil)
+            cell.cellConfig(cellType: .notImage, title: CellType.allCases[indexPath.row].titleText, settingValue: self.priority == 1 ? "높음" : priority == 2 ? "보통" : priority == 3 ? "낮음" : nil, image: nil)
+        
         case CellType.addImage.rawValue:
-            cell.cellConfig(title: CellType.allCases[indexPath.row].titleText, settingValue: nil)
+            cell.cellConfig(cellType: .Image, title: CellType.allCases[indexPath.row].titleText, settingValue: nil, image: self.image)
         default:
             break
         }
@@ -230,8 +242,48 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
             pushViewController(vc)
+        
+        //이미지 추가
+        case CellType.addImage.rawValue:
+            
+            showActionSheetThreeActionType(title: "이미지 추가하기", message: nil, cancelTitle: "취소", firstButtonTitle: "이미지 사용안함", firstBbuttonStyle: .default, firstButtonAction: { action in
+                self.image = nil
+                self.tableView.reloadRows(at: [IndexPath(row: CellType.addImage.rawValue, section: 0)], with: .automatic)
+                
+            }, secondButtonTitle: "앨범에서 이미지 선택하기", secondButtonStyle: .default) { action in
+                var config = PHPickerConfiguration()
+                config.selectionLimit = 1
+                config.filter = .any(of: [.images, .livePhotos, .screenshots])
+                
+                let phpicker = PHPickerViewController(configuration: config)
+                phpicker.delegate = self
+                self.present(phpicker, animated: true)
+            }
         default:
             break
+        }
+    }
+}
+
+//MARK: - PHPickerViewControllerDelegate
+
+extension AddTodoViewController: PHPickerViewControllerDelegate {
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        if let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                if error != nil {
+                    print(error ?? "")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.image = image as? UIImage
+                    self.dismiss(animated: true)
+                    self.tableView.reloadRows(at: [IndexPath(row: CellType.addImage.rawValue, section: 0)], with: .automatic)
+                }
+            }
+        } else {
+            self.dismiss(animated: true)
         }
     }
 }

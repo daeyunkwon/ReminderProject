@@ -15,6 +15,7 @@
 		445BE0932C368FC40079B81B /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 44E179642C340ADA003901CC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		445BE0962C36AC9F0079B81B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE0952C36AC9F0079B81B /* CalendarViewController.swift */; };
 		445BE0992C36AD500079B81B /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 445BE0982C36AD500079B81B /* FSCalendar */; };
+		445BE09D2C39362D0079B81B /* ImageFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445BE09C2C39362D0079B81B /* ImageFileManager.swift */; };
 		44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794A2C33E697003901CC /* AppDelegate.swift */; };
 		44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794C2C33E697003901CC /* SceneDelegate.swift */; };
 		44E1794F2C33E697003901CC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E1794E2C33E697003901CC /* ListViewController.swift */; };
@@ -58,6 +59,7 @@
 		445BE0892C3588250079B81B /* MainCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionCell.swift; sourceTree = "<group>"; };
 		445BE08B2C35886D0079B81B /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		445BE0952C36AC9F0079B81B /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		445BE09C2C39362D0079B81B /* ImageFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileManager.swift; sourceTree = "<group>"; };
 		44E179472C33E697003901CC /* ReminderProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReminderProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E1794A2C33E697003901CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44E1794C2C33E697003901CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,14 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
+		445BE09B2C3935510079B81B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				44E179882C354F4F003901CC /* Date+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		44E1793E2C33E697003901CC = {
 			isa = PBXGroup;
 			children = (
@@ -180,11 +190,12 @@
 		44E179602C34094F003901CC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				44E179702C34131F003901CC /* Base */,
 				44E1796A2C340F52003901CC /* Constant.swift */,
 				44E179712C341D7E003901CC /* Reuseable.swift */,
 				44E179732C34230A003901CC /* Protocol.swift */,
-				44E179882C354F4F003901CC /* Date+Extension.swift */,
+				445BE09C2C39362D0079B81B /* ImageFileManager.swift */,
+				44E179702C34131F003901CC /* Base */,
+				445BE09B2C3935510079B81B /* Extension */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -327,6 +338,7 @@
 				44E179722C341D7E003901CC /* Reuseable.swift in Sources */,
 				445BE08C2C35886D0079B81B /* BaseCollectionViewCell.swift in Sources */,
 				44E1796B2C340F52003901CC /* Constant.swift in Sources */,
+				445BE09D2C39362D0079B81B /* ImageFileManager.swift in Sources */,
 				44E179892C354F4F003901CC /* Date+Extension.swift in Sources */,
 				44E1794B2C33E697003901CC /* AppDelegate.swift in Sources */,
 				44E1797D2C344E6E003901CC /* DateViewController.swift in Sources */,
