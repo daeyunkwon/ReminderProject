@@ -83,6 +83,19 @@ class ReminderRepository {
         }
     }
     
+    func deleteReminder(reminder: Reminder, completion: @escaping (Result<Bool, ReminderRealmError>) -> Void) {
+        do {
+            try realm.write {
+                ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)")
+                realm.delete(reminder)
+                completion(.success(true))
+            }
+        } catch {
+            print(error)
+            completion(.failure(.failedToDelete))
+        }
+    }
+    
     
     
     

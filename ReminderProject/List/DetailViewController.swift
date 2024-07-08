@@ -15,6 +15,8 @@ final class DetailViewController: BaseViewController {
     
     var reminder: Reminder?
     
+    let repository = ReminderRepository()
+    
     var closureForDelete: (Reminder) -> Void = { sender in }
     
     //MARK: - UI Components
@@ -37,11 +39,10 @@ final class DetailViewController: BaseViewController {
         }
         
         let delete = UIAction(title: "삭제") { _ in
-            try! REALM_DATABASE.write({
-                self.closureForDelete(self.reminder!)
-                REALM_DATABASE.delete(self.reminder ?? Reminder())
+            if let reminder = self.reminder {
+                self.closureForDelete(reminder)
                 self.popViewController()
-            })
+            }
         }
         return [update, delete]
     }

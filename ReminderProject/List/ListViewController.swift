@@ -18,6 +18,8 @@ final class ListViewController: BaseViewController {
     var reminders: [Reminder] = []
     var filterdReminders: [Reminder] = []
     
+    let repository = ReminderRepository()
+    
     enum ViewType {
         case today
         case scheduled
@@ -166,12 +168,23 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
             for i in 0...reminders.count - 1 {
                 if reminders[i].id == sender.id {
                     reminders.remove(at: i)
+                    
+                    self.filterdReminders = self.reminders
+                    
+                    self.repository.deleteReminder(reminder: sender) { result in
+                        switch result {
+                        case .success(_):
+                            self.tableView.reloadData()
+                            return
+                        
+                        case .failure(let error):
+                            print(error.errorDescription)
+                            self.showFailAlert(type: .failedToDelete)
+                            return
+                        }
+                    }
                 }
             }
-        
-            self.filterdReminders = self.reminders
-            self.tableView.reloadData()
-            
         }
         pushViewController(vc)
     }
