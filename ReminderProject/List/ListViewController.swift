@@ -18,12 +18,30 @@ final class ListViewController: BaseViewController {
     var reminders: [Reminder] = []
     var filterdReminders: [Reminder] = []
     
-    enum ViewType: String {
-        case today = "오늘"
-        case scheduled = "예정"
-        case all = "전체"
-        case flag = "깃발 표시"
-        case done = "완료됨"
+    enum ViewType {
+        case today
+        case scheduled
+        case all
+        case flag
+        case done
+        case userFolder(name: String)
+        
+        var title: String {
+            switch self {
+            case .today:
+                return "오늘"
+            case .scheduled:
+                return "예정"
+            case .all:
+                return "전체"
+            case .flag:
+                return "깃발 표시"
+            case .done:
+                return "완료됨"
+            case .userFolder(let name):
+                return name
+            }
+        }
     }
     var viewType: ViewType = .all
     
@@ -81,7 +99,7 @@ final class ListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = viewType.rawValue
+        navigationItem.title = viewType.title
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -281,38 +281,48 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case CellType.today.rawValue:
-            let vc = ListViewController()
-            vc.viewType = .today
-            vc.reminders = todayList
-            pushViewController(vc)
+        if indexPath.section == 0 {
+            switch indexPath.row {
+            case CellType.today.rawValue:
+                let vc = ListViewController()
+                vc.viewType = .today
+                vc.reminders = todayList
+                pushViewController(vc)
+                
+            case CellType.scheduled.rawValue:
+                let vc = ListViewController()
+                vc.viewType = .scheduled
+                vc.reminders = scheduledList
+                pushViewController(vc)
             
-        case CellType.scheduled.rawValue:
-            let vc = ListViewController()
-            vc.viewType = .scheduled
-            vc.reminders = scheduledList
-            pushViewController(vc)
-        
-        case CellType.all.rawValue:
-            let vc = ListViewController()
-            vc.viewType = .all
-            vc.reminders = allList
-            pushViewController(vc)
-            
-        case CellType.flag.rawValue:
-            let vc = ListViewController()
-            vc.viewType = .flag
-            vc.reminders = flagList
-            pushViewController(vc)
-            
-        case CellType.done.rawValue:
-            let vc = ListViewController()
-            vc.viewType = .done
-            vc.reminders = doneList
-            pushViewController(vc)
-        default:
-            break
+            case CellType.all.rawValue:
+                let vc = ListViewController()
+                vc.viewType = .all
+                vc.reminders = allList
+                pushViewController(vc)
+                
+            case CellType.flag.rawValue:
+                let vc = ListViewController()
+                vc.viewType = .flag
+                vc.reminders = flagList
+                pushViewController(vc)
+                
+            case CellType.done.rawValue:
+                let vc = ListViewController()
+                vc.viewType = .done
+                vc.reminders = doneList
+                pushViewController(vc)
+            default:
+                break
+            }
         }
+        
+        if indexPath.section == 1 {
+            let vc = ListViewController()
+            vc.reminders = Array(self.folders[indexPath.row].reminderList)
+            vc.viewType = .userFolder(name: self.folders[indexPath.row].name)
+            pushViewController(vc)
+        }
+        
     }
 }

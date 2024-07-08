@@ -55,6 +55,7 @@ final class AddTodoViewController: BaseViewController {
         case tag
         case priority
         case addImage
+        case folder
         
         var titleText: String {
             switch self {
@@ -66,6 +67,8 @@ final class AddTodoViewController: BaseViewController {
                 return "우선 순위"
             case .addImage:
                 return "이미지 추가"
+            case .folder:
+                return "폴더 설정"
             }
         }
     }
@@ -163,6 +166,7 @@ final class AddTodoViewController: BaseViewController {
             let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority)
             
             if let folder = self.folder {
+                //지정한 폴더와 관계 설정
                 repository.createReminder(data: data, folder: folder) { result in
                     switch result {
                     case .success(let reminder):
@@ -175,6 +179,25 @@ final class AddTodoViewController: BaseViewController {
                         self.closureForListVC()
                         self.dismiss(animated: true)
                         
+                    case .failure(let error):
+                        print(error.errorDescription)
+                        self.showFailAlert(type: .failedToWrite)
+                    }
+                }
+            } else {
+                //폴더없이 생성
+                repository.createReminder(data: data) { result in
+                    switch result {
+                    case .success(let reminder):
+                        if let image = self.image {
+                            ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(reminder.id)") { //Document에 이미지 저장
+                                data.imageID = "\(reminder.id)"
+                            }
+                        }
+                        
+                        self.closureForListVC()
+                        self.dismiss(animated: true)
+                    
                     case .failure(let error):
                         print(error.errorDescription)
                         self.showFailAlert(type: .failedToWrite)
@@ -266,6 +289,9 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         
         case CellType.addImage.rawValue:
             cell.cellConfig(cellType: .Image, title: CellType.allCases[indexPath.row].titleText, settingValue: nil, image: self.image)
+            
+        case CellType.folder.rawValue:
+            cell.cellConfig(cellType: .notImage, title: CellType.allCases[indexPath.row].titleText, settingValue: self.folder?.name, image: nil)
         default:
             break
         }
@@ -336,6 +362,17 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
                 phpicker.delegate = self
                 self.present(phpicker, animated: true)
             }
+        
+        //폴더 설정
+        case CellType.folder.rawValue:
+            let vc = FolderListViewController()
+            
+            vc.closureForDataSend = {[weak self] sender in
+                self?.folder = sender
+                self?.tableView.reloadData()
+            }
+            
+            pushViewController(vc)
         default:
             break
         }

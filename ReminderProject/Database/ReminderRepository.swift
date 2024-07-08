@@ -26,6 +26,19 @@ class ReminderRepository {
         return Array(result)
     }
     
+    func createReminder(data: Reminder, completion: @escaping (Result<Reminder, ReminderRealmError>) -> Void) {
+        do {
+            try realm.write {
+                realm.add(data)
+                completion(.success(data))
+            }
+            
+        } catch {
+            print(error)
+            completion(.failure(ReminderRealmError.failedToWrite))
+        }
+    }
+    
     func createReminder(data: Reminder, folder: Folder, completion: @escaping (Result<Reminder, ReminderRealmError>) -> Void) {
         do {
             try realm.write {
