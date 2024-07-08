@@ -351,7 +351,7 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
             
             showActionSheetThreeActionType(title: "이미지 추가하기", message: nil, cancelTitle: "취소", firstButtonTitle: "이미지 사용안함", firstBbuttonStyle: .default, firstButtonAction: { action in
                 self.image = nil
-                self.tableView.reloadRows(at: [IndexPath(row: CellType.addImage.rawValue, section: 0)], with: .automatic)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 
             }, secondButtonTitle: "앨범에서 이미지 선택하기", secondButtonStyle: .default) { action in
                 var config = PHPickerConfiguration()
@@ -365,14 +365,21 @@ extension AddTodoViewController: UITableViewDataSource, UITableViewDelegate {
         
         //폴더 설정
         case CellType.folder.rawValue:
-            let vc = FolderListViewController()
             
-            vc.closureForDataSend = {[weak self] sender in
-                self?.folder = sender
-                self?.tableView.reloadData()
+            showActionSheetThreeActionType(title: "폴더 설정", message: nil, cancelTitle: "취소", firstButtonTitle: "폴더 설정 안함", firstBbuttonStyle: .default, firstButtonAction: { action in
+                self.folder = nil
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                
+            }, secondButtonTitle: "폴더 선택하기", secondButtonStyle: .default) { action in
+                let vc = FolderListViewController()
+                
+                vc.closureForDataSend = {[weak self] sender in
+                    self?.folder = sender
+                    self?.tableView.reloadData()
+                }
+                
+                self.pushViewController(vc)
             }
-            
-            pushViewController(vc)
         default:
             break
         }

@@ -30,7 +30,6 @@ final class FolderListViewController: BaseViewController {
         return tableView
     }()
     
-    
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -53,11 +52,6 @@ final class FolderListViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
     }
-    
-    
-    //MARK: - Functions
-    
-
 }
 
 //MARK: - UITableViewDataSource, UITableViewDelegate

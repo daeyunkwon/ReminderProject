@@ -9,10 +9,6 @@ import UIKit
 
 final class FolderListTableViewCell: BaseTableViewCell {
     
-    //MARK: - Properties
-    
-    
-    
     //MARK: - UI Components
     
     private let backView: UIView = {
@@ -25,6 +21,7 @@ final class FolderListTableViewCell: BaseTableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
+        label.numberOfLines = 0
         return label
     }()
     
