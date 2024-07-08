@@ -16,37 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let config = Realm.Configuration(schemaVersion: 6) { migration, oldSchemaVersion in
-            if oldSchemaVersion < 1 {
-                
-            }
+        let config = Realm.Configuration(schemaVersion: 0) { migration, oldSchemaVersion in
             
-            if oldSchemaVersion < 2 {
-                migration.enumerateObjects(ofType: Reminder.className()) { oldObject, newObject in
-                    guard let new = newObject else { return }
-                    guard let old = oldObject else { return }
-                    
-                    
-                    guard let dateString = old["deadline"] as? String else { return }
-                    
-                    let date = Date.makeStringToDate(str: dateString)
-                    let doubleValue: Double = date.timeIntervalSince1970
-                    
-                    new["deadline"] = doubleValue
-                }
-            }
-            
-            if oldSchemaVersion < 3 {
-                
-            }
-            
-            if oldSchemaVersion < 5 {
-                //deadline -> Date 타입으로 변경
-            }
-            
-            if oldSchemaVersion < 6 {
-                //신규 컬럼 추가 -> imageID
-            }
         }
         
         Realm.Configuration.defaultConfiguration = config
