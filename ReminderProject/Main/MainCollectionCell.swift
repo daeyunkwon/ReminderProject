@@ -19,6 +19,7 @@ final class MainCollectionCell: BaseCollectionViewCell {
         case all
         case flag
         case done
+        case userFolder
         
         var title: String {
             switch self {
@@ -32,6 +33,8 @@ final class MainCollectionCell: BaseCollectionViewCell {
                 return "깃발 표시"
             case .done:
                 return "완료됨"
+            default:
+                return "None"
             }
         }
     }
@@ -56,7 +59,6 @@ final class MainCollectionCell: BaseCollectionViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = Constant.Color.gray
-        label.text = "\(0)"
         return label
     }()
     
@@ -100,7 +102,7 @@ final class MainCollectionCell: BaseCollectionViewCell {
     
     //MARK: - Functions
     
-    func cellConfig(cellType: CellType, count: Int) {
+    func cellConfig(cellType: CellType, count: Int, userFolderTitle: String? = nil) {
         switch cellType {
         case .today:
             iconImageView.image = Constant.SymbolImage.leafCircleFill
@@ -121,6 +123,10 @@ final class MainCollectionCell: BaseCollectionViewCell {
         case .done:
             iconImageView.image = Constant.SymbolImage.checkmarkCircleFill
             titleLabel.text = cellType.title
+            countLabel.text = "\(count)"
+        case .userFolder:
+            iconImageView.image = Constant.SymbolImage.trayCircleFill
+            titleLabel.text = userFolderTitle
             countLabel.text = "\(count)"
         }
     }

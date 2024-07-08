@@ -15,7 +15,11 @@ final class MainViewController: BaseViewController {
     //MARK: - Properties
     
     let repository = ReminderRepository()
-    var folders: [Folder] = []
+    var folders: [Folder] = [] {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     
     private enum CellType: Int, CaseIterable {
         case today
@@ -24,7 +28,7 @@ final class MainViewController: BaseViewController {
         case flag
         case done
     }
-    private var list: Results<Reminder>!
+    
     private var todayList: [Reminder] = []
     private var scheduledList: [Reminder] = []
     private var allList: [Reminder] = []
@@ -83,8 +87,9 @@ final class MainViewController: BaseViewController {
     }
     
     private func setupData() {
-        self.list = REALM_DATABASE.objects(Reminder.self)
-        let list = Array(self.list)
+        self.folders = repository.fetchAllFolder()
+        
+        let list = repository.fetchAllReminder()
         
         //전체
         self.allList = list
@@ -142,8 +147,9 @@ final class MainViewController: BaseViewController {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalToSuperview()
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-10)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         view.addSubview(newAddButton)
@@ -194,7 +200,6 @@ final class MainViewController: BaseViewController {
                     switch result {
                     case .success(_):
                         self.folders = self.repository.fetchAllFolder()
-                        self.collectionView.reloadData()
                     case .failure(let error):
                         print(error.errorDescription)
                         self.showFailAlert(type: .failedToWrite)
@@ -231,8 +236,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CellType.allCases.count
+        if section == 0 {
+            return CellType.allCases.count
+        } else {
+            return self.folders.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -241,19 +254,27 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionViewCell()
         }
         
-        switch indexPath.row {
-        case CellType.today.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.todayList.count)
-        case CellType.scheduled.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.scheduledList.count)
-        case CellType.all.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.allList.count)
-        case CellType.flag.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.flagList.count)
-        case CellType.done.rawValue:
-            cell.cellConfig(cellType: MainCollectionCell.CellType.allCases[indexPath.row], count: self.doneList.count)
-        default:
-            break
+        if indexPath.section == 0 {
+            switch indexPath.row {
+            case CellType.today.rawValue:
+                cell.cellConfig(cellType: .today, count: self.todayList.count)
+            case CellType.scheduled.rawValue:
+                cell.cellConfig(cellType: .scheduled, count: self.scheduledList.count)
+            case CellType.all.rawValue:
+                cell.cellConfig(cellType: .all, count: self.allList.count)
+            case CellType.flag.rawValue:
+                cell.cellConfig(cellType: .flag, count: self.flagList.count)
+            case CellType.done.rawValue:
+                cell.cellConfig(cellType: .done, count: self.doneList.count)
+            default: break
+                
+            }
+        }
+        
+        if indexPath.section == 1 {
+            let data = self.folders[indexPath.row]
+            let count = data.reminderList.count
+            cell.cellConfig(cellType: .userFolder, count: count, userFolderTitle: data.name)
         }
         
         return cell

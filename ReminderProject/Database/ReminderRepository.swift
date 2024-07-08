@@ -21,6 +21,11 @@ class ReminderRepository {
         return Array(result)
     }
     
+    func fetchAllReminder() -> [Reminder] {
+        let result = realm.objects(Reminder.self)
+        return Array(result)
+    }
+    
     func createReminder(data: Reminder, folder: Folder, completion: @escaping (Result<Reminder, ReminderRealmError>) -> Void) {
         do {
             try realm.write {
@@ -40,6 +45,7 @@ class ReminderRepository {
         do {
             try realm.write {
                 realm.add(folder)
+                completion(.success(folder))
             }
         } catch {
             print(error)
