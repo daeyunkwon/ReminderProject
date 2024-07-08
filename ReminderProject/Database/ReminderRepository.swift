@@ -66,7 +66,7 @@ class ReminderRepository {
         }
     }
     
-    func updateReminder(reminder: Reminder, title: String, contentText: String?, deadline: Date?, tag: String?, priority: Int, completion: @escaping (Result<Reminder, ReminderRealmError>) -> Void) {
+    func updateReminder(reminder: Reminder, title: String, contentText: String?, deadline: Date?, tag: String?, priority: Int, folder: Folder?, completion: @escaping (Result<Reminder, ReminderRealmError>) -> Void) {
         do {
             try realm.write {
                 reminder.todoTitle = title
@@ -74,6 +74,14 @@ class ReminderRepository {
                 reminder.deadline = deadline
                 reminder.tag = tag
                 reminder.priority = priority
+                
+                if let currentFolder = reminder.main.first {
+                    currentFolder.reminderList.removeFirst()
+                }
+                
+                if let folder = folder {
+                    folder.reminderList.append(reminder)
+                }
                 
                 completion(.success(reminder))
             }

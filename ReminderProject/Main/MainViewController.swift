@@ -319,6 +319,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         
         if indexPath.section == 1 {
             let vc = ListViewController()
+            vc.folder = self.folders[indexPath.row]
             vc.reminders = Array(self.folders[indexPath.row].reminderList)
             vc.viewType = .userFolder(name: self.folders[indexPath.row].name)
             pushViewController(vc)

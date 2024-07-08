@@ -18,6 +18,8 @@ final class ListViewController: BaseViewController {
     var reminders: [Reminder] = []
     var filterdReminders: [Reminder] = []
     
+    var folder: Folder?
+    
     let repository = ReminderRepository()
     
     enum ViewType {
@@ -102,6 +104,13 @@ final class ListViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.title = viewType.title
+        if let folder = self.folder {
+            self.reminders = Array(folder.reminderList)
+            self.filterdReminders = self.reminders
+            self.tableView.reloadData()
+        } else {
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -155,6 +164,8 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.reminder = filterdReminders[indexPath.row]
         if let folderName = filterdReminders[indexPath.row].main.first?.name {
             cell.overViewLabel.text = folderName
+        } else {
+            cell.overViewLabel.text = nil
         }
         
         return cell

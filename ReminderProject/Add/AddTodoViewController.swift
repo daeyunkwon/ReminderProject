@@ -208,7 +208,7 @@ final class AddTodoViewController: BaseViewController {
         case .edit:
             guard let reminder = self.reminder else { return }
             
-            repository.updateReminder(reminder: reminder, title: title, contentText: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority) { result in
+            repository.updateReminder(reminder: reminder, title: title, contentText: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority, folder: self.folder) { result in
                 switch result {
                 case .success(let reminder):
                     if let image = self.image { //이미지 설정한 경우
@@ -218,7 +218,8 @@ final class AddTodoViewController: BaseViewController {
                     } else { //이미지 미설정한 경우
                         ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)")
                     }
-                    
+                    self.closureForDetailVC(reminder)
+                    self.popViewController()
                 case .failure(let error):
                     print(error)
                     ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)") //Document에 저장된 이미지 제거
