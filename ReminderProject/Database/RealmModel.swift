@@ -26,8 +26,27 @@ enum ReminderRealmError: Error {
     }
 }
 
-class Reminder: Object {
+class Folder: Object {
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var name: String
+    @Persisted var regDate: Date
     
+    @Persisted var reminderList: List<Reminder>
+    
+    convenience init(name: String) {
+        self.init()
+        self.name = name
+        self.regDate = Date()
+    }
+    
+    enum Key: String {
+        case name
+        case regDate
+        case reminderList
+    }
+}
+
+class Reminder: Object {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var todoTitle: String
     @Persisted var todoContent: String?
@@ -37,6 +56,8 @@ class Reminder: Object {
     @Persisted var isDone: Bool
     @Persisted var flag: Bool
     @Persisted var imageID: String?
+    
+    @Persisted(originProperty: Folder.Key.reminderList.rawValue) var main: LinkingObjects<Folder>
     
     convenience init(todoTitle: String, todoContent: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: Int, imageID: String? = nil) {
         self.init()
@@ -57,5 +78,7 @@ class Reminder: Object {
         case tag
         case priority
         case isDone
+        case flag
+        case imageID
     }
 }
