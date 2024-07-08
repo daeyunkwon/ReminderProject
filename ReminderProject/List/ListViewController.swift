@@ -174,8 +174,10 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.reminder = self.filterdReminders[indexPath.row]
+        
         vc.closureForDelete = {[weak self] sender in
             guard let self = self else { return }
+            
             for i in 0...reminders.count - 1 {
                 if reminders[i].id == sender.id {
                     reminders.remove(at: i)
@@ -194,6 +196,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
                             return
                         }
                     }
+                    break
                 }
             }
         }
