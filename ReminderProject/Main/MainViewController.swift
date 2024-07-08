@@ -14,6 +14,9 @@ final class MainViewController: BaseViewController {
     
     //MARK: - Properties
     
+    let repository = ReminderRepository()
+    var folders: [Folder] = []
+    
     private enum CellType: Int, CaseIterable {
         case today
         case scheduled
@@ -181,7 +184,28 @@ final class MainViewController: BaseViewController {
     }
     
     @objc private func listAddButtonTapped() {
-        print(#function)
+        let alert = UIAlertController(title: "새로운 폴더 추가", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        alert.addAction(UIAlertAction(title: "저장", style: .default, handler: { okAction in
+            
+            guard let text = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespaces) else { return }
+            if !text.isEmpty {
+                self.repository.createFolder(folderName: text) { result in
+                    switch result {
+                    case .success(_):
+                        self.folders = self.repository.fetchAllFolder()
+                        self.collectionView.reloadData()
+                    case .failure(let error):
+                        print(error.errorDescription)
+                        self.showFailAlert(type: .failedToWrite)
+                    }
+                }
+            } else {
+                self.showFailAlert(type: .failedToWrite)
+            }
+        }))
+        alert.addTextField()
+        present(alert, animated: true)
     }
 }
 

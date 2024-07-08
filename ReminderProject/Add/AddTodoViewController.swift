@@ -16,6 +16,10 @@ final class AddTodoViewController: BaseViewController {
     
     //MARK: - Properties
     
+    var folder: Folder?
+    
+    private let repository = ReminderRepository()
+    
     enum ViewType {
         case new
         case edit
@@ -158,49 +162,45 @@ final class AddTodoViewController: BaseViewController {
         case .new:
             let data = Reminder(todoTitle: title, todoContent: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority)
             
-            if let image = self.image {
-                ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(data.id)") { //Document에 이미지 저장
-                    data.imageID = "\(data.id)"
+            if let folder = self.folder {
+                repository.createReminder(data: data, folder: folder) { result in
+                    switch result {
+                    case .success(let reminder):
+                        if let image = self.image {
+                            ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(reminder.id)") { //Document에 이미지 저장
+                                data.imageID = "\(reminder.id)"
+                            }
+                        }
+                        
+                        self.closureForListVC()
+                        self.dismiss(animated: true)
+                        
+                    case .failure(let error):
+                        print(error.errorDescription)
+                        self.showFailAlert(type: .failedToWrite)
+                    }
                 }
-            }
-            
-            do {
-                try REALM_DATABASE.write {
-                    REALM_DATABASE.add(data)
-                }
-                self.closureForListVC()
-                dismiss(animated: true)
-            } catch {
-                ImageFileManager.shared.removeImageFromDocument(filename: "\(data.id)") //Document에 저장된 이미지 제거
-                print(ReminderRealmError.failedToWrite.errorDescription)
-                print(error)
             }
             
         case .edit:
             guard let reminder = self.reminder else { return }
             
-            do {
-                try REALM_DATABASE.write {
-                    reminder.todoTitle = title
-                    reminder.todoContent = self.contentText
-                    reminder.deadline = self.deadline
-                    reminder.tag = self.tag
-                    reminder.priority = self.priority
-                    
-                    if let image = self.image {
+            repository.updateReminder(reminder: reminder, title: title, contentText: self.contentText, deadline: self.deadline, tag: self.tag, priority: self.priority) { result in
+                switch result {
+                case .success(let reminder):
+                    if let image = self.image { //이미지 설정한 경우
                         ImageFileManager.shared.saveImageToDocument(image: image, filename: "\(reminder.id)") {
                             reminder.imageID = "\(reminder.id)"
                         }
-                    } else {
+                    } else { //이미지 미설정한 경우
                         ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)")
                     }
+                    
+                case .failure(let error):
+                    print(error)
+                    ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)") //Document에 저장된 이미지 제거
+                    self.showFailAlert(type: .failedToUpdate)
                 }
-                self.closureForDetailVC(reminder)
-                popViewController()
-            } catch {
-                ImageFileManager.shared.removeImageFromDocument(filename: "\(reminder.id)") //Document에 저장된 이미지 제거
-                print(ReminderRealmError.failedToWrite.errorDescription)
-                print(error)
             }
         }
     }

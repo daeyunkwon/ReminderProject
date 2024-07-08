@@ -37,6 +37,7 @@
 		44E179892C354F4F003901CC /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E179882C354F4F003901CC /* Date+Extension.swift */; };
 		44E915572C399DB400E6E4C9 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 44E915562C399DB400E6E4C9 /* FSCalendar */; };
 		44E915592C39A25500E6E4C9 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E915582C39A25500E6E4C9 /* DetailViewController.swift */; };
+		44E915712C3BD1C100E6E4C9 /* ReminderRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E915702C3BD1C100E6E4C9 /* ReminderRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -81,6 +82,7 @@
 		44E179802C34566C003901CC /* RealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
 		44E179882C354F4F003901CC /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		44E915582C39A25500E6E4C9 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		44E915702C3BD1C100E6E4C9 /* ReminderRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				44E179802C34566C003901CC /* RealmModel.swift */,
+				44E915702C3BD1C100E6E4C9 /* ReminderRepository.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				44E1796F2C341319003901CC /* BaseTableViewCell.swift in Sources */,
 				445BE0812C355A000079B81B /* TagViewController.swift in Sources */,
 				445BE0882C3570650079B81B /* MainViewController.swift in Sources */,
+				44E915712C3BD1C100E6E4C9 /* ReminderRepository.swift in Sources */,
 				44E1794D2C33E697003901CC /* SceneDelegate.swift in Sources */,
 				44E1796D2C3412CE003901CC /* ListTableViewCell.swift in Sources */,
 			);

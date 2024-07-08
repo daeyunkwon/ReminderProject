@@ -12,6 +12,7 @@ import RealmSwift
 enum ReminderRealmError: Error {
     case noRealm
     case failedToWrite
+    case failedToUpdate
     case failedToDelete
     
     var errorDescription: String {
@@ -22,6 +23,8 @@ enum ReminderRealmError: Error {
             return "Error: realm에 데이터 쓰기가 실패했습니다."
         case .failedToDelete:
             return "Error: realm에 데이터 삭제가 실패했습니다."
+        case .failedToUpdate:
+            return "Error: realm에 데이터 없데이트가 실패했습니다."
         }
     }
 }
