@@ -116,6 +116,14 @@ final class ListTableViewCell: BaseTableViewCell {
         return view
     }()
     
+    let overViewLabel: UILabel = {
+       let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 14)
+        label.textColor = Constant.Color.customSkyBlue
+        label.textAlignment = .right
+        return label
+    }()
+    
     //MARK: - Life Cycle
     
     override func prepareForReuse() {
@@ -177,6 +185,12 @@ final class ListTableViewCell: BaseTableViewCell {
             make.leading.equalTo(checkButton.snp.trailing).offset(20)
             make.trailing.equalToSuperview()
             make.bottom.equalTo(contentView.snp.bottom).offset(0)
+        }
+        
+        contentView.addSubview(overViewLabel)
+        overViewLabel.snp.makeConstraints { make in
+          make.trailing.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(20)
+            make.top.equalTo(contentLabel.snp.bottom).offset(8)
         }
     }
     

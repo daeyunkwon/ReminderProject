@@ -151,6 +151,9 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.delegate = self
         cell.cellType = .usingListView
         cell.reminder = filterdReminders[indexPath.row]
+        if let folderName = filterdReminders[indexPath.row].main.first?.name {
+            cell.overViewLabel.text = folderName
+        }
         
         return cell
     }

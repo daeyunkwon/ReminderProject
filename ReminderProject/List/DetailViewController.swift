@@ -24,6 +24,10 @@ final class DetailViewController: BaseViewController {
             let vc = AddTodoViewController()
             vc.viewType = .edit
             vc.reminder = self.reminder
+            if let folder = self.reminder?.main.first {
+                vc.folder = folder
+            }
+            
             vc.closureForDetailVC = {[weak self] sender in
                 guard let self = self else { return }
                 self.reminder = sender
@@ -95,6 +99,11 @@ final class DetailViewController: BaseViewController {
         return label
     }()
     
+    private let folderLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        return label
+    }()
     
     //MARK: - Life Cycle
     
@@ -153,14 +162,18 @@ final class DetailViewController: BaseViewController {
             make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(20)
         }
         
+        contentView.addSubview(folderLabel)
+        folderLabel.snp.makeConstraints { make in
+            make.top.equalTo(tagLabel.snp.bottom).offset(5)
+            make.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
         contentView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(tagLabel.snp.bottom).offset(20)
+            make.top.equalTo(folderLabel.snp.bottom).offset(20)
             make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(20)
             make.bottom.equalTo(contentView.snp.bottom).offset(-150)
         }
-        contentLabel.backgroundColor = .blue
-        
     }
     
     override func configureUI() {
@@ -177,7 +190,7 @@ final class DetailViewController: BaseViewController {
         imageView.image = ImageFileManager.shared.loadImageToDocument(filename: data.imageID ?? "")
         titleLabel.text = data.todoTitle
         contentLabel.text = data.todoContent
-        tagLabel.text = "태그: \(data.tag ?? "없음")"
+        tagLabel.text = "태그: \(data.tag ?? "미설정")"
         
         if data.deadline != nil {
             deadlineLabel.text = "마감일: \(Date.makeDateString(date: data.deadline ?? Date()))"
@@ -187,10 +200,7 @@ final class DetailViewController: BaseViewController {
         
         let priorityText = data.priority == 1 ? "높음" : data.priority == 2 ? "보통" : data.priority == 3 ? "낮음" : ""
         priorityLabel.text = "우선순위: \(priorityText)"
+        
+        folderLabel.text = "폴더: \(reminder?.main.first?.name ?? "미설정")"
     }
-    
-    
-    //MARK: - Functions
-    
-
 }
